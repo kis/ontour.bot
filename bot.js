@@ -1,8 +1,7 @@
+const { getArtist, getEventsByArtist } = require('./api');
 const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment');
-const request = require('superagent');
 const token = process.env.TOKEN;
-const API_KEY = 'iOAsnWYdLjjhNvvM';
 
 let bot;
 
@@ -49,13 +48,16 @@ bot.onText(/\/search/, (msg) => {
         }
 
         let artist = artistsParsed.resultsPage.results.artist[0];
-
         let events = await getEventsByArtist(artist);
         let eventsParsed = JSON.parse(events.text);
         let eventsList = eventsParsed.resultsPage.results;
         let eventsCount = eventsParsed.resultsPage.totalEntries;
         
-        bot.sendMessage(msg.chat.id, `Found ${eventsCount} concerts, I will group it 5 per message, please continue with tap on Next`);
+        let message = !eventsCount ?
+            `Found ${eventsCount} concerts, sorry :(` :
+            `Found ${eventsCount} concerts, I will group it 5 per message, please continue with tap on Next`;
+
+        bot.sendMessage(msg.chat.id, message);
 
         if (!eventsList.event || !eventsList.event.length) return;
 
@@ -78,18 +80,6 @@ bot.onText(/\/search/, (msg) => {
         });
     });
 });
-
-async function getArtist(artist_name) {
-    return request
-        .get('http://api.songkick.com/api/3.0/search/artists.json')
-        .query({ apikey: API_KEY, query: artist_name, per_page: 1 });
-}
-
-async function getEventsByArtist(artist) {
-    return request
-        .get(artist.identifier[0].eventsHref)
-        .query({ apikey: API_KEY, per_page: 5 });
-}
 
 bot.onText(/\/echo (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
