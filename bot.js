@@ -1,7 +1,8 @@
 const { getArtist, getEventsByArtist, getLocation, getEventsByMetroAreaID } = require('./api');
+const { renderEventsList } = require('./utils');
 const TelegramBot = require('node-telegram-bot-api');
-const moment = require('moment');
 const token = process.env.TOKEN;
+const { ARTISTS_SEARCH, LOCATIONS_SEARCH } = require('./constants');
 
 let bot;
 
@@ -61,21 +62,7 @@ bot.onText(/\/artists/, (msg) => {
 
         if (!eventsList.event || !eventsList.event.length) return;
 
-        console.log(artist)
-
-        let ontourUntil = moment(artist.onTourUntil).format('MMM D, YYYY');
-        let eventTpl = `<b>${artist.displayName.toUpperCase()} CONCERTS
-ON TOUR UNTIL ${ontourUntil}</b>\n\n`;
-
-        eventsList.event.map(event => {
-            let datetime = moment(event.start.datetime).format('MMM D, YYYY HH:mma');
-		    let isValid = moment(datetime, 'MMM D, YYYY HH:mma').isValid();
-		    if (!isValid) datetime = moment(event.start.date).format('MMM D, YYYY');
-
-            eventTpl += `<b>🎤 ${event.displayName}</b>
-📌 ${event.location.city}
-🕘 ${datetime}\n\n`;
-        });
+        let eventTpl = renderEventsList(eventsList, artist, ARTISTS_SEARCH);
 
         bot.sendMessage(msg.chat.id, eventTpl, {
             "parse_mode": "html"
@@ -97,9 +84,11 @@ bot.onText(/\/locations/, (msg) => {
             return;
         }
 
-        let country = citiesParsed.resultsPage.results.location[0].city.country.displayName;
-        let city = citiesParsed.resultsPage.results.location[0].city.displayName;
-        let metroAreaID = citiesParsed.resultsPage.results.location[0].metroArea.id;
+        let location = citiesParsed.resultsPage.results.location[0];
+
+        let country = location.city.country.displayName;
+        let city = location.city.displayName;
+        let metroAreaID = location.metroArea.id;
         let events = await getEventsByMetroAreaID(metroAreaID);
         let eventsParsed = JSON.parse(events.text);
         let eventsList = eventsParsed.resultsPage.results;
@@ -113,17 +102,7 @@ bot.onText(/\/locations/, (msg) => {
 
         if (!eventsList.event || !eventsList.event.length) return;
 
-        let eventTpl = `<b>${city.toUpperCase()} ${country.toUpperCase()} CONCERTS</b>\n\n`;
-
-        eventsList.event.map(event => {
-            let datetime = moment(event.start.datetime).format('MMM D, YYYY HH:mma');
-		    let isValid = moment(datetime, 'MMM D, YYYY HH:mma').isValid();
-		    if (!isValid) datetime = moment(event.start.date).format('MMM D, YYYY');
-
-            eventTpl += `<b>🎤 ${event.displayName}</b>
-📌 ${event.location.city}
-🕘 ${datetime}\n\n`;
-        });
+        let eventTpl = renderEventsList(eventsList, {city, country}, LOCATIONS_SEARCH);
 
         bot.sendMessage(msg.chat.id, eventTpl, {
             "parse_mode": "html"
