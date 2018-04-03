@@ -1,8 +1,15 @@
-const { getArtist, getEventsByArtist, getLocation, getEventsByMetroAreaID } = require('./api');
-const { renderEventsList } = require('./utils');
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TOKEN;
 const { ARTISTS_SEARCH, LOCATIONS_SEARCH } = require('./constants');
+const { lang } = require('./lang/lang-en');
+
+const { 
+    renderEventsList, 
+    getArtists, 
+    getEventsByArtist, 
+    getMetroAreas,
+    getEventsByMetroAreaID 
+} = require('./utils');
 
 let bot;
 
@@ -17,21 +24,11 @@ else {
 console.log('Bot server started in the ' + process.env.NODE_ENV + ' mode');
 
 bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Welcome. To search concerts by artists type /artists. To search events in different cities type /locations.");
+    bot.sendMessage(msg.chat.id, lang.WELCOME);
 });
 
 bot.onText(/\/help/, (msg) => {
-    let message = `
-Commands:
-/start
-/artists - search concerts by artists and bands
-/locations - search events in different cities
-/help
-    `;
-
-    bot.sendMessage(msg.chat.id, message, {
-        "parse_mode": "html"
-    });
+    bot.sendMessage(msg.chat.id, lang.COMMANDS, { "parse_mode": "html" });
 });
 
 bot.onText(/\/artists/, (msg) => {
@@ -39,21 +36,16 @@ bot.onText(/\/artists/, (msg) => {
 
     bot.once("message", async reply => {
         bot.sendMessage(msg.chat.id, `Let's search for ${reply.text}'s tour...`);
+        let artists = await getArtists(reply.text);
 
-        let artists = await getArtist(reply.text);
-        let artistsParsed = JSON.parse(artists.text);
-
-        if (!artistsParsed || !artistsParsed.resultsPage.results.artist) {
+        if (!artists || !artists.resultsPage.results.artist) {
             bot.sendMessage(msg.chat.id, 'Sorry, I haven\'t found such artist :(');
             return;
         }
 
-        let artist = artistsParsed.resultsPage.results.artist[0];
-        let events = await getEventsByArtist(artist);
-        let eventsParsed = JSON.parse(events.text);
-        let eventsList = eventsParsed.resultsPage.results;
-        let eventsCount = eventsParsed.resultsPage.totalEntries;
-        
+        let artist = artists.resultsPage.results.artist[0];
+        let { eventsList, eventsCount } = await getEventsByArtist(artist);
+
         let message = !eventsCount ?
             `Found ${eventsCount} concerts, sorry :(` :
             `Found ${eventsCount} concerts, I will group it 5 per message, please continue with tap on Next`;
@@ -63,10 +55,7 @@ bot.onText(/\/artists/, (msg) => {
         if (!eventsList.event || !eventsList.event.length) return;
 
         let eventTpl = renderEventsList(eventsList, artist, ARTISTS_SEARCH);
-
-        bot.sendMessage(msg.chat.id, eventTpl, {
-            "parse_mode": "html"
-        });
+        bot.sendMessage(msg.chat.id, eventTpl, { "parse_mode": "html" });
     });
 });
 
@@ -75,24 +64,17 @@ bot.onText(/\/locations/, (msg) => {
 
     bot.once("message", async reply => {
         bot.sendMessage(msg.chat.id, `Let's search for events in ${reply.text}...`);
+        let cities = await getMetroAreas(reply.text);
 
-        let cities = await getLocation(reply.text);
-        let citiesParsed = JSON.parse(cities.text);
-
-        if (!citiesParsed || !citiesParsed.resultsPage.results.location) {
+        if (!cities || !cities.resultsPage.results.location) {
             bot.sendMessage(msg.chat.id, 'Sorry, I haven\'t found such city :(');
             return;
         }
 
-        let location = citiesParsed.resultsPage.results.location[0];
-
-        let country = location.city.country.displayName;
-        let city = location.city.displayName;
+        let location = cities.resultsPage.results.location[0];
+        let city = location.city;
         let metroAreaID = location.metroArea.id;
-        let events = await getEventsByMetroAreaID(metroAreaID);
-        let eventsParsed = JSON.parse(events.text);
-        let eventsList = eventsParsed.resultsPage.results;
-        let eventsCount = eventsParsed.resultsPage.totalEntries;
+        let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID);
         
         let message = !eventsCount ?
             `Found ${eventsCount} concerts, sorry :(` :
@@ -102,11 +84,8 @@ bot.onText(/\/locations/, (msg) => {
 
         if (!eventsList.event || !eventsList.event.length) return;
 
-        let eventTpl = renderEventsList(eventsList, {city, country}, LOCATIONS_SEARCH);
-
-        bot.sendMessage(msg.chat.id, eventTpl, {
-            "parse_mode": "html"
-        });
+        let eventTpl = renderEventsList(eventsList, city, LOCATIONS_SEARCH);
+        bot.sendMessage(msg.chat.id, eventTpl, { "parse_mode": "html" });
     });
 });
 

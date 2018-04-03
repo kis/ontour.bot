@@ -1,4 +1,12 @@
 const moment = require('moment');
+
+const { 
+    fetchArtist, 
+    fetchEventsByArtist, 
+    fetchLocation, 
+    fetchEventsByMetroAreaID 
+} = require('./api');
+
 const { ARTISTS_SEARCH, LOCATIONS_SEARCH } = require('./constants');
 
 function renderEventsList(eventsList, value, type) {
@@ -9,7 +17,9 @@ function renderEventsList(eventsList, value, type) {
         eventTpl = `<b>${value.displayName.toUpperCase()} CONCERTS
 ON TOUR UNTIL ${ontourUntil}</b>\n\n`;
     } else if (type === LOCATIONS_SEARCH) {
-        eventTpl = `<b>${value.city.toUpperCase()} ${value.country.toUpperCase()} CONCERTS</b>\n\n`;
+        let country = value.country.displayName;
+        let city = value.displayName;
+        eventTpl = `<b>${city.toUpperCase()} ${country.toUpperCase()} CONCERTS</b>\n\n`;
     }
 
     eventsList.event.map(event => {
@@ -25,6 +35,40 @@ ON TOUR UNTIL ${ontourUntil}</b>\n\n`;
     return eventTpl;
 }
 
+async function getArtists(query) {
+    let artists = await fetchArtist(query);
+    let artistsParsed = JSON.parse(artists.text);
+    return artistsParsed;
+}
+
+async function getEventsByArtist(artist) {
+    let events = await fetchEventsByArtist(artist);
+    let eventsParsed = JSON.parse(events.text);
+    let results = eventsParsed.resultsPage;
+    let eventsList = results.results;
+    let eventsCount = results.totalEntries;
+    return { eventsList, eventsCount };
+}
+
+async function getMetroAreas(query) {
+    let cities = await fetchLocation(query);
+    let citiesParsed = JSON.parse(cities.text);
+    return citiesParsed;
+}
+
+async function getEventsByMetroAreaID(metroAreaID) {
+    let events = await fetchEventsByMetroAreaID(metroAreaID);
+    let eventsParsed = JSON.parse(events.text);
+    let results = eventsParsed.resultsPage;
+    let eventsList = results.results;
+    let eventsCount = results.totalEntries;
+    return { eventsList, eventsCount };
+}
+
 module.exports = {
-    renderEventsList
+    renderEventsList,
+    getArtists,
+    getEventsByArtist,
+    getMetroAreas,
+    getEventsByMetroAreaID
 }
