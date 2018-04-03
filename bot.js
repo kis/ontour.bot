@@ -16,8 +16,7 @@ let bot;
 if(process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token);
     bot.setWebHook(process.env.HEROKU_URL + bot.token);
-}
-else {
+} else {
     bot = new TelegramBot(token, { polling: true });
 }
 
@@ -32,24 +31,21 @@ bot.onText(/\/help/, (msg) => {
 });
 
 bot.onText(/\/artists/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Cool, now type the name of the band");
+    bot.sendMessage(msg.chat.id, lang.BAND);
 
     bot.once("message", async reply => {
-        bot.sendMessage(msg.chat.id, `Let's search for ${reply.text}'s tour...`);
+        bot.sendMessage(msg.chat.id, lang.BAND_SEARCH(reply.text));
         let artists = await getArtists(reply.text);
 
         if (!artists || !artists.resultsPage.results.artist) {
-            bot.sendMessage(msg.chat.id, 'Sorry, I haven\'t found such artist :(');
+            bot.sendMessage(msg.chat.id, lang.BAND_NOT_FOUND);
             return;
         }
 
         let artist = artists.resultsPage.results.artist[0];
         let { eventsList, eventsCount } = await getEventsByArtist(artist);
 
-        let message = !eventsCount ?
-            `Found ${eventsCount} concerts, sorry :(` :
-            `Found ${eventsCount} concerts, I will group it 5 per message, please continue with tap on Next`;
-
+        let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
         bot.sendMessage(msg.chat.id, message);
 
         if (!eventsList.event || !eventsList.event.length) return;
@@ -60,14 +56,14 @@ bot.onText(/\/artists/, (msg) => {
 });
 
 bot.onText(/\/locations/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Cool, now type the city");
+    bot.sendMessage(msg.chat.id, lang.LOCATION);
 
     bot.once("message", async reply => {
-        bot.sendMessage(msg.chat.id, `Let's search for events in ${reply.text}...`);
+        bot.sendMessage(msg.chat.id, lang.LOCATION_SEARCH(reply.text));
         let cities = await getMetroAreas(reply.text);
 
         if (!cities || !cities.resultsPage.results.location) {
-            bot.sendMessage(msg.chat.id, 'Sorry, I haven\'t found such city :(');
+            bot.sendMessage(msg.chat.id, lang.LOCATION_NOT_FOUND);
             return;
         }
 
@@ -76,10 +72,7 @@ bot.onText(/\/locations/, (msg) => {
         let metroAreaID = location.metroArea.id;
         let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID);
         
-        let message = !eventsCount ?
-            `Found ${eventsCount} concerts, sorry :(` :
-            `Found ${eventsCount} concerts, I will group it 5 per message, please continue with tap on Next`;
-
+        let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
         bot.sendMessage(msg.chat.id, message);
 
         if (!eventsList.event || !eventsList.event.length) return;
