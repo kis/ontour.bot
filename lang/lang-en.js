@@ -26,6 +26,8 @@ const EVENTS_NOT_FOUND = 'I haven\'t found any concerts, sorry :(';
 
 const EVENTS_FOUND = count => `Found ${count} concerts, I will group it 5 per message, please continue with tap on Next`;
 
+const FINISHED = 'Finished! To start new search tap /start';
+
 const lang = {
     WELCOME,
     COMMANDS,
@@ -36,7 +38,8 @@ const lang = {
     LOCATION_SEARCH,
     LOCATION_NOT_FOUND,
     EVENTS_NOT_FOUND,
-    EVENTS_FOUND
+    EVENTS_FOUND,
+    FINISHED
 }
 
 module.exports = {

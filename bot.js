@@ -4,7 +4,7 @@ const { ARTISTS_SEARCH, LOCATIONS_SEARCH } = require('./constants');
 const { lang } = require('./lang/lang-en');
 
 const { 
-    renderEventsList, 
+    getEventsListTemplate, 
     getArtists, 
     getEventsByArtist, 
     getMetroAreas,
@@ -15,8 +15,8 @@ let bot;
 
 let searchType = null;
 let searchPage = 0;
-let artistSearchParams = {};
-let locationSearchParams = {};
+let artistSearchParams = null;
+let locationSearchParams = null;
 
 if(process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token);
@@ -62,16 +62,19 @@ async function getNextEventsByArtist() {
     let { artist, chatID } = artistSearchParams;
     searchPage++;
 
-    console.log('next events by artist, page = ', searchPage);
-    
-    let { eventsList, eventsCount } = await getEventsByArtist(artist, searchPage);
+    let events = await getEventsByArtist(artist, searchPage);
+    if (events === lang.FINISHED) {
+        bot.sendMessage(chatID, events);  
+        return;
+    }
 
+    let { eventsList, eventsCount } = events;
     let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
     bot.sendMessage(chatID, message);
 
     if (!eventsList.event || !eventsList.event.length) return;
 
-    let eventTpl = renderEventsList(eventsList, artist, ARTISTS_SEARCH);
+    let eventTpl = getEventsListTemplate(eventsList, artist, ARTISTS_SEARCH);
     sendEventsList(chatID, eventTpl);
 }
 
@@ -104,16 +107,20 @@ bot.onText(/\/locations/, (msg) => {
 async function getNextEventsByMetroAreaID() {
     let { metroAreaID, city, chatID } = locationSearchParams;
     searchPage++;
-    console.log('next events by metro area, page = ', searchPage);
 
-    let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID, searchPage);
-        
+    let events = await getEventsByMetroAreaID(metroAreaID, searchPage);
+    if (events === lang.FINISHED) {
+        bot.sendMessage(chatID, events);
+        return;
+    }
+
+    let { eventsList, eventsCount } = events;
     let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
     bot.sendMessage(chatID, message);
 
     if (!eventsList.event || !eventsList.event.length) return;
 
-    let eventTpl = renderEventsList(eventsList, city, LOCATIONS_SEARCH);
+    let eventTpl = getEventsListTemplate(eventsList, city, LOCATIONS_SEARCH);
     sendEventsList(chatID, eventTpl);
 }
 
@@ -138,9 +145,9 @@ bot.on('message', async msg => {
     const chatId = msg.chat.id;
 
     if (msg.text === 'Next') {
-        if (searchType === ARTISTS_SEARCH) {
+        if (artistSearchParams && searchType === ARTISTS_SEARCH) {
             await getNextEventsByArtist();
-        } else if (searchType === LOCATIONS_SEARCH) { 
+        } else if (locationSearchParams && searchType === LOCATIONS_SEARCH) { 
             await getNextEventsByMetroAreaID();
         }
     }
