@@ -62,19 +62,17 @@ async function getNextEventsByArtist() {
     let { artist, chatID } = artistSearchParams;
     searchPage++;
 
-    let events = await getEventsByArtist(artist, searchPage);
-    if (events === lang.FINISHED) {
-        bot.sendMessage(chatID, events);  
-        return;
-    }
-
-    let { eventsList, eventsCount } = events;
+    let { eventsList, eventsCount } = await getEventsByArtist(artist, searchPage);
     let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
     bot.sendMessage(chatID, message);
 
     if (!eventsList.event || !eventsList.event.length) return;
 
     let eventTpl = getEventsListTemplate(eventsList, artist, ARTISTS_SEARCH);
+    if (searchPage*5 > eventsCount) {
+        artistSearchParams = null;
+        eventTpl += lang.FINISHED;
+    }
     sendEventsList(chatID, eventTpl);
 }
 
@@ -108,19 +106,17 @@ async function getNextEventsByMetroAreaID() {
     let { metroAreaID, city, chatID } = locationSearchParams;
     searchPage++;
 
-    let events = await getEventsByMetroAreaID(metroAreaID, searchPage);
-    if (events === lang.FINISHED) {
-        bot.sendMessage(chatID, events);
-        return;
-    }
-
-    let { eventsList, eventsCount } = events;
+    let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID, searchPage);
     let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
     bot.sendMessage(chatID, message);
 
     if (!eventsList.event || !eventsList.event.length) return;
 
     let eventTpl = getEventsListTemplate(eventsList, city, LOCATIONS_SEARCH);
+    if (searchPage*5 > eventsCount) {
+        locationSearchParams = null;
+        eventTpl += lang.FINISHED;
+    }
     sendEventsList(chatID, eventTpl);
 }
 

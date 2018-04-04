@@ -10,8 +10,6 @@ const {
 
 const { ARTISTS_SEARCH, LOCATIONS_SEARCH } = require('./constants');
 
-let EVENTS_COUNT = 0;
-
 function getEventsListTemplate(eventsList, value, type) {
     let eventTpl;
 
@@ -43,13 +41,12 @@ async function getArtists(query) {
 }
 
 async function getEventsByArtist(artist, page) {
-    if (EVENTS_COUNT && (page-1)*5 > EVENTS_COUNT) return lang.FINISHED;
     let events = await fetchEventsByArtist(artist, page);
     let eventsParsed = JSON.parse(events.text);
     let results = eventsParsed.resultsPage;
     let eventsList = results.results;
-    EVENTS_COUNT = results.totalEntries;
-    return { eventsList, eventsCount: EVENTS_COUNT };
+    let eventsCount = results.totalEntries;
+    return { eventsList, eventsCount };
 }
 
 async function getMetroAreas(query) {
@@ -59,13 +56,12 @@ async function getMetroAreas(query) {
 }
 
 async function getEventsByMetroAreaID(metroAreaID, page) {
-    if (EVENTS_COUNT && (page-1)*5 > EVENTS_COUNT) return lang.FINISHED;
     let events = await fetchEventsByMetroAreaID(metroAreaID, page);
     let eventsParsed = JSON.parse(events.text);
     let results = eventsParsed.resultsPage;
     let eventsList = results.results;
-    EVENTS_COUNT = results.totalEntries;
-    return { eventsList, eventsCount: EVENTS_COUNT };
+    let eventsCount = results.totalEntries;
+    return { eventsList, eventsCount };
 }
 
 module.exports = {
