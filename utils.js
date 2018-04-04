@@ -41,8 +41,8 @@ async function getArtists(query) {
     return artistsParsed;
 }
 
-async function getEventsByArtist(artist) {
-    let events = await fetchEventsByArtist(artist);
+async function getEventsByArtist(artist, page) {
+    let events = await fetchEventsByArtist(artist, page);
     let eventsParsed = JSON.parse(events.text);
     let results = eventsParsed.resultsPage;
     let eventsList = results.results;
@@ -56,8 +56,8 @@ async function getMetroAreas(query) {
     return citiesParsed;
 }
 
-async function getEventsByMetroAreaID(metroAreaID) {
-    let events = await fetchEventsByMetroAreaID(metroAreaID);
+async function getEventsByMetroAreaID(metroAreaID, page) {
+    let events = await fetchEventsByMetroAreaID(metroAreaID, page);
     let eventsParsed = JSON.parse(events.text);
     let results = eventsParsed.resultsPage;
     let eventsList = results.results;

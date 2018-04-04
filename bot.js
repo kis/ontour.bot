@@ -13,6 +13,11 @@ const {
 
 let bot;
 
+let searchType = null;
+let searchPage = 0;
+let artistSearchParams = {};
+let locationSearchParams = {};
+
 if(process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token);
     bot.setWebHook(process.env.HEROKU_URL + bot.token);
@@ -32,6 +37,8 @@ bot.onText(/\/help/, (msg) => {
 
 bot.onText(/\/artists/, (msg) => {
     bot.sendMessage(msg.chat.id, lang.BAND);
+    searchType = ARTISTS_SEARCH;
+    searchPage = 0;
 
     bot.once("message", async reply => {
         bot.sendMessage(msg.chat.id, lang.BAND_SEARCH(reply.text));
@@ -43,20 +50,35 @@ bot.onText(/\/artists/, (msg) => {
         }
 
         let artist = artists.resultsPage.results.artist[0];
-        let { eventsList, eventsCount } = await getEventsByArtist(artist);
-
-        let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
-        bot.sendMessage(msg.chat.id, message);
-
-        if (!eventsList.event || !eventsList.event.length) return;
-
-        let eventTpl = renderEventsList(eventsList, artist, ARTISTS_SEARCH);
-        bot.sendMessage(msg.chat.id, eventTpl, { "parse_mode": "html" });
+        artistSearchParams = {
+            artist: artist,
+            chatID: msg.chat.id
+        };
+        await getNextEventsByArtist();
     });
 });
 
+async function getNextEventsByArtist() {
+    let { artist, chatID } = artistSearchParams;
+    searchPage++;
+
+    console.log('next events by artist, page = ', searchPage);
+    
+    let { eventsList, eventsCount } = await getEventsByArtist(artist, searchPage);
+
+    let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
+    bot.sendMessage(chatID, message);
+
+    if (!eventsList.event || !eventsList.event.length) return;
+
+    let eventTpl = renderEventsList(eventsList, artist, ARTISTS_SEARCH);
+    sendEventsList(chatID, eventTpl);
+}
+
 bot.onText(/\/locations/, (msg) => {
     bot.sendMessage(msg.chat.id, lang.LOCATION);
+    searchType = LOCATIONS_SEARCH;
+    searchPage = 0;
 
     bot.once("message", async reply => {
         bot.sendMessage(msg.chat.id, lang.LOCATION_SEARCH(reply.text));
@@ -70,17 +92,41 @@ bot.onText(/\/locations/, (msg) => {
         let location = cities.resultsPage.results.location[0];
         let city = location.city;
         let metroAreaID = location.metroArea.id;
-        let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID);
-        
-        let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
-        bot.sendMessage(msg.chat.id, message);
-
-        if (!eventsList.event || !eventsList.event.length) return;
-
-        let eventTpl = renderEventsList(eventsList, city, LOCATIONS_SEARCH);
-        bot.sendMessage(msg.chat.id, eventTpl, { "parse_mode": "html" });
+        locationSearchParams = {
+            metroAreaID: metroAreaID,
+            city: city,
+            chatID: msg.chat.id
+        };
+        await getNextEventsByMetroAreaID();
     });
 });
+
+async function getNextEventsByMetroAreaID() {
+    let { metroAreaID, city, chatID } = locationSearchParams;
+    searchPage++;
+    console.log('next events by metro area, page = ', searchPage);
+
+    let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID, searchPage);
+        
+    let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
+    bot.sendMessage(chatID, message);
+
+    if (!eventsList.event || !eventsList.event.length) return;
+
+    let eventTpl = renderEventsList(eventsList, city, LOCATIONS_SEARCH);
+    sendEventsList(chatID, eventTpl);
+}
+
+function sendEventsList(chatID, message) {
+    bot.sendMessage(chatID, message, { 
+        "parse_mode": "html",
+        "reply_markup": JSON.stringify({
+            "keyboard": [
+                [{text: 'Next'}],
+            ]
+        }) 
+    });
+}
 
 bot.onText(/\/echo (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
@@ -88,8 +134,16 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
     bot.sendMessage(chatId, resp);
 });
 
-bot.on('message', (msg) => {
+bot.on('message', async msg => {
     const chatId = msg.chat.id;
+
+    if (msg.text === 'Next') {
+        if (searchType === ARTISTS_SEARCH) {
+            await getNextEventsByArtist();
+        } else if (searchType === LOCATIONS_SEARCH) { 
+            await getNextEventsByMetroAreaID();
+        }
+    }
 });
 
 module.exports = bot;

@@ -7,10 +7,10 @@ async function fetchLocation(location_query) {
         .query({ apikey: API_KEY, query: location_query, per_page: 1 });
 }
 
-async function fetchEventsByMetroAreaID(id) {
+async function fetchEventsByMetroAreaID(id, page) {
     return request
         .get(`http://api.songkick.com/api/3.0/metro_areas/${id}/calendar.json`)
-        .query({ apikey: API_KEY, per_page: 5 });
+        .query({ apikey: API_KEY, per_page: 5, page: page });
 }
 
 async function fetchArtist(artist_name) {
@@ -19,10 +19,10 @@ async function fetchArtist(artist_name) {
         .query({ apikey: API_KEY, query: artist_name, per_page: 1 });
 }
 
-async function fetchEventsByArtist(artist) {
+async function fetchEventsByArtist(artist, page) {
     return request
         .get(artist.identifier[0].eventsHref)
-        .query({ apikey: API_KEY, per_page: 5 });
+        .query({ apikey: API_KEY, per_page: 5, page: page });
 }
 
 module.exports = {
