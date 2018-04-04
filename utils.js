@@ -8,16 +8,16 @@ const {
     fetchEventsByMetroAreaID 
 } = require('./api');
 
-const { ARTISTS_SEARCH, LOCATIONS_SEARCH } = require('./constants');
+const { constants } = require('./constants');
 
 function getEventsListTemplate(eventsList, value, type) {
     let eventTpl;
 
-    if (type === ARTISTS_SEARCH) {
+    if (type === constants.ARTISTS_SEARCH) {
         let ontourUntil = moment(value.onTourUntil).format('MMM D, YYYY');
         eventTpl = `<b>${value.displayName.toUpperCase()} CONCERTS
 ON TOUR UNTIL ${ontourUntil}</b>\n\n`;
-    } else if (type === LOCATIONS_SEARCH) {
+    } else if (type === constants.LOCATIONS_SEARCH) {
         let country = value.country.displayName;
         let city = value.displayName;
         eventTpl = `<b>${city.toUpperCase()} ${country.toUpperCase()} CONCERTS</b>\n\n`;

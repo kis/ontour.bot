@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TOKEN;
-const { ARTISTS_SEARCH, LOCATIONS_SEARCH } = require('./constants');
+const { constants } = require('./constants');
 const { lang } = require('./lang/lang-en');
 
 const { 
@@ -37,7 +37,7 @@ bot.onText(/\/help/, (msg) => {
 
 bot.onText(/\/artists/, (msg) => {
     bot.sendMessage(msg.chat.id, lang.BAND);
-    searchType = ARTISTS_SEARCH;
+    searchType = constants.ARTISTS_SEARCH;
     searchPage = 0;
 
     bot.once("message", async reply => {
@@ -68,8 +68,8 @@ async function getNextEventsByArtist() {
 
     if (!eventsList.event || !eventsList.event.length) return;
 
-    let eventTpl = getEventsListTemplate(eventsList, artist, ARTISTS_SEARCH);
-    if (searchPage*5 > eventsCount) {
+    let eventTpl = getEventsListTemplate(eventsList, artist, constants.ARTISTS_SEARCH);
+    if (searchPage * constants.EVENTS_PER_PAGE > eventsCount) {
         artistSearchParams = null;
         eventTpl += lang.FINISHED;
     }
@@ -78,7 +78,7 @@ async function getNextEventsByArtist() {
 
 bot.onText(/\/locations/, (msg) => {
     bot.sendMessage(msg.chat.id, lang.LOCATION);
-    searchType = LOCATIONS_SEARCH;
+    searchType = constants.LOCATIONS_SEARCH;
     searchPage = 0;
 
     bot.once("message", async reply => {
@@ -112,8 +112,8 @@ async function getNextEventsByMetroAreaID() {
 
     if (!eventsList.event || !eventsList.event.length) return;
 
-    let eventTpl = getEventsListTemplate(eventsList, city, LOCATIONS_SEARCH);
-    if (searchPage*5 > eventsCount) {
+    let eventTpl = getEventsListTemplate(eventsList, city, constants.LOCATIONS_SEARCH);
+    if (searchPage * constants.EVENTS_PER_PAGE > eventsCount) {
         locationSearchParams = null;
         eventTpl += lang.FINISHED;
     }
@@ -141,9 +141,9 @@ bot.on('message', async msg => {
     const chatId = msg.chat.id;
 
     if (msg.text === 'Next') {
-        if (artistSearchParams && searchType === ARTISTS_SEARCH) {
+        if (artistSearchParams && searchType === constants.ARTISTS_SEARCH) {
             await getNextEventsByArtist();
-        } else if (locationSearchParams && searchType === LOCATIONS_SEARCH) { 
+        } else if (locationSearchParams && searchType === constants.LOCATIONS_SEARCH) { 
             await getNextEventsByMetroAreaID();
         }
     }
