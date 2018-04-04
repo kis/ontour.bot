@@ -12,7 +12,6 @@ const {
 } = require('./utils');
 
 let bot;
-
 let searchType = null;
 let searchPage = 0;
 let artistSearchParams = null;
