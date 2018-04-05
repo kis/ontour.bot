@@ -1,7 +1,8 @@
 const WELCOME = `Welcome! 😄😉 
-🎸 To search concerts by artists type /artists. 
+🎸 To search concerts by artists type /artists.
 🌎 To search events in different cities type /locations.
-🆘 To check the list of available command type /help.`;
+🆘 To check the list of available command type /help.
+🎓 To set bot language type /setlang.`;
 
 const COMMANDS = `Commands: 💬
 /start
@@ -9,6 +10,10 @@ const COMMANDS = `Commands: 💬
 /locations - search events in different cities
 /setlang - set bot language
 /help`;
+
+const SET_LANG = 'Choose the language ;)';
+
+const LANG_IS = lang => `Bot language set to ${lang}. Press /start`;
 
 const BAND = "Cool, now type the name of the band";
 
@@ -28,7 +33,9 @@ const EVENTS_FOUND = count => `Found ${count} concerts, I will group it 5 per me
 
 const FINISHED = 'Finished! To start new search tap /start';
 
-const lang = {
+const langEn = {
+    SET_LANG,
+    LANG_IS,
     WELCOME,
     COMMANDS,
     BAND,
@@ -43,5 +50,5 @@ const lang = {
 }
 
 module.exports = {
-    lang
+    langEn
 }

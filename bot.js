@@ -1,7 +1,10 @@
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TOKEN;
 const { constants } = require('./constants');
-const { lang } = require('./lang/lang-en');
+const { langEn } = require('./lang/lang-en');
+const { langRu } = require('./lang/lang-ru');
+
+let lang = langEn;
 
 const { 
     getEventsListTemplate, 
@@ -129,6 +132,29 @@ function sendEventsList(chatID, message) {
         }) 
     });
 }
+
+bot.onText(/\/setlang/, (msg) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, lang.SET_LANG, { 
+        "parse_mode": "html",
+        "reply_markup": JSON.stringify({
+            "keyboard": [
+                [{text: '🇺🇸 English'}],
+                [{text: '🇷🇺 Russian '}]
+            ]
+        }) 
+    });
+
+    bot.once("message", (reply) => {
+        bot.sendMessage(msg.chat.id, lang.LANG_IS(reply.text));
+        
+        if (reply.text.indexOf(constants.LANG_EN) != -1) {
+            lang = langEn;
+        } else if (reply.text.indexOf(constants.LANG_RU) != -1) {
+            lang = langRu;
+        }
+    });
+});
 
 bot.onText(/\/echo (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
