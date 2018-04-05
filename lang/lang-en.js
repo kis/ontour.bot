@@ -33,6 +33,8 @@ const EVENTS_FOUND = count => `Found ${count} concerts, I will group it 5 per me
 
 const FINISHED = 'Finished! To start new search tap /start';
 
+const NEXT = 'Next';
+
 const langEn = {
     SET_LANG,
     LANG_IS,
@@ -46,7 +48,8 @@ const langEn = {
     LOCATION_NOT_FOUND,
     EVENTS_NOT_FOUND,
     EVENTS_FOUND,
-    FINISHED
+    FINISHED,
+    NEXT
 }
 
 module.exports = {

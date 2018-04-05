@@ -127,7 +127,7 @@ function sendEventsList(chatID, message) {
         "parse_mode": "html",
         "reply_markup": JSON.stringify({
             "keyboard": [
-                [{text: 'Next'}],
+                [{text: lang.NEXT}]
             ]
         }) 
     });
@@ -139,8 +139,8 @@ bot.onText(/\/setlang/, (msg) => {
         "parse_mode": "html",
         "reply_markup": JSON.stringify({
             "keyboard": [
-                [{text: '🇺🇸 English'}],
-                [{text: '🇷🇺 Russian '}]
+                [{text: `🇺🇸 ${constants.LANG_EN}`}],
+                [{text: `🇷🇺 ${constants.LANG_RU}`}]
             ]
         }) 
     });
@@ -165,7 +165,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 bot.on('message', async msg => {
     const chatId = msg.chat.id;
 
-    if (msg.text === 'Next') {
+    if (msg.text === lang.NEXT) {
         if (artistSearchParams && searchType === constants.ARTISTS_SEARCH) {
             await getNextEventsByArtist();
         } else if (locationSearchParams && searchType === constants.LOCATIONS_SEARCH) { 
