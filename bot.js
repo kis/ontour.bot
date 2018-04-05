@@ -20,7 +20,7 @@ let searchPage = 0;
 let artistSearchParams = null;
 let locationSearchParams = null;
 
-if(process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token);
     bot.setWebHook(process.env.HEROKU_URL + bot.token);
 } else {
@@ -43,7 +43,6 @@ bot.onText(/\/artists/, (msg) => {
     searchPage = 0;
 
     bot.once("message", async reply => {
-        bot.sendMessage(msg.chat.id, lang.BAND_SEARCH(reply.text));
         let artists = await getArtists(reply.text);
 
         if (!artists || !artists.resultsPage.results.artist) {
@@ -51,14 +50,37 @@ bot.onText(/\/artists/, (msg) => {
             return;
         }
 
-        let artist = artists.resultsPage.results.artist[0];
-        artistSearchParams = {
-            artist: artist,
-            chatID: msg.chat.id
-        };
-        await getNextEventsByArtist();
+        sendMessageWithNext(msg.chat.id, lang.DATES_FROM);
+        getFromDate(artists, msg.chat.id);
     });
 });
+
+async function getFromDate(artists, chatId) {
+    await new Promise((resolve, reject) => {
+        bot.once("message", async reply => {
+            sendMessageWithNext(chatId, lang.DATES_TO);
+            getEvents(artists, chatId);
+            resolve(true);
+        });
+    });
+    return;
+}
+
+async function getEvents(artists, chatId) {
+    await new Promise((resolve, reject) => {
+        bot.once("message", async reply => {
+            let artist = artists.resultsPage.results.artist[0];
+            bot.sendMessage(chatId, lang.BAND_SEARCH(artist.displayName));
+            artistSearchParams = {
+                artist: artist,
+                chatID: chatId
+            };
+            await getNextEventsByArtist();
+            resolve(true);
+        });
+    });
+    return;
+}
 
 async function getNextEventsByArtist() {
     let { artist, chatID } = artistSearchParams;
@@ -75,7 +97,7 @@ async function getNextEventsByArtist() {
         artistSearchParams = null;
         eventTpl += lang.FINISHED;
     }
-    sendEventsList(chatID, eventTpl);
+    sendMessageWithNext(chatID, eventTpl);
 }
 
 bot.onText(/\/locations/, (msg) => {
@@ -119,10 +141,10 @@ async function getNextEventsByMetroAreaID() {
         locationSearchParams = null;
         eventTpl += lang.FINISHED;
     }
-    sendEventsList(chatID, eventTpl);
+    sendMessageWithNext(chatID, eventTpl);
 }
 
-function sendEventsList(chatID, message) {
+function sendMessageWithNext(chatID, message) {
     bot.sendMessage(chatID, message, { 
         "parse_mode": "html",
         "reply_markup": JSON.stringify({
