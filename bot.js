@@ -127,8 +127,9 @@ function sendEventsList(chatID, message) {
         "parse_mode": "html",
         "reply_markup": JSON.stringify({
             "keyboard": [
-                [{text: lang.NEXT}]
-            ]
+                [{text: lang.NEXT}],
+            ],
+            "one_time_keyboard": true
         }) 
     });
 }
@@ -141,7 +142,8 @@ bot.onText(/\/setlang/, (msg) => {
             "keyboard": [
                 [{text: `🇺🇸 ${constants.LANG_EN}`}],
                 [{text: `🇷🇺 ${constants.LANG_RU}`}]
-            ]
+            ],
+            "one_time_keyboard": true
         }) 
     });
 
