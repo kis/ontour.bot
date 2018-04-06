@@ -44,7 +44,8 @@ bot.onText(/\/artists/, async msg => {
     let fromDate = await askFromDate(msg.chat.id);
     let toDate   = await askToDate(msg.chat.id);
     try {
-        await getArtistEvents(artists, fromDate, toDate, msg.chat.id);
+        setArtistSearchParams(artists, fromDate, toDate, msg.chat.id);
+        await getNextEventsByArtist();
     } catch(e) {
         bot.sendMessage(msg.chat.id, lang.BAND_NOT_FOUND, constants.REPLY_OPTIONS);
     }
@@ -78,16 +79,15 @@ async function askToDate(chatId) {
     });
 }
 
-async function getArtistEvents(artists, fromDate, toDate, chatId) {
+function setArtistSearchParams(artists, fromDate, toDate, chatID) {
     let artist = artists.resultsPage.results.artist[0];
-    bot.sendMessage(chatId, lang.BAND_SEARCH(artist.displayName), constants.REPLY_OPTIONS);
+    bot.sendMessage(chatID, lang.BAND_SEARCH(artist.displayName), constants.REPLY_OPTIONS);
     artistSearchParams = {
         artist,
         fromDate,
         toDate,
-        chatID: chatId
+        chatID
     };
-    await getNextEventsByArtist();
 }
 
 async function getNextEventsByArtist() {
@@ -116,7 +116,8 @@ bot.onText(/\/locations/, async msg => {
     let fromDate = await askFromDate(msg.chat.id);
     let toDate   = await askToDate(msg.chat.id);
     try {
-        await getCityEvents(cities, fromDate, toDate, msg.chat.id);
+        setCitySearchParams(cities, fromDate, toDate, msg.chat.id);
+        await getNextEventsByMetroAreaID();
     } catch(e) {
         bot.sendMessage(msg.chat.id, lang.LOCATION_NOT_FOUND, constants.REPLY_OPTIONS);
     }
@@ -132,19 +133,18 @@ async function askLocation(chatId) {
     });
 }
 
-async function getCityEvents(cities, fromDate, toDate, chatId) {
+function setCitySearchParams(cities, fromDate, toDate, chatID) {
     let location = cities.resultsPage.results.location[0];
     let city = location.city;
     let metroAreaID = location.metroArea.id;
-    bot.sendMessage(chatId, lang.LOCATION_SEARCH(city.displayName), constants.REPLY_OPTIONS);
+    bot.sendMessage(chatID, lang.LOCATION_SEARCH(city.displayName), constants.REPLY_OPTIONS);
     locationSearchParams = {
         metroAreaID,
         city,
         fromDate,
         toDate,
-        chatID: chatId
+        chatID
     };
-    await getNextEventsByMetroAreaID();
 }
 
 async function getNextEventsByMetroAreaID() {
