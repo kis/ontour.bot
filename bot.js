@@ -4,8 +4,6 @@ const { constants } = require('./constants');
 const { langEn } = require('./lang/lang-en');
 const { langRu } = require('./lang/lang-ru');
 
-let lang = langEn;
-
 const { 
     getEventsListTemplate, 
     getArtists, 
@@ -15,6 +13,7 @@ const {
 } = require('./utils');
 
 let bot;
+let lang = langEn;
 let searchType = null;
 let searchPage = 0;
 let artistSearchParams = null;
@@ -45,7 +44,7 @@ bot.onText(/\/artists/, async msg => {
     let fromDate = await askFromDate(msg.chat.id);
     let toDate   = await askToDate(msg.chat.id);
     try {
-        await getArtistEvents(artists, msg.chat.id);
+        await getArtistEvents(artists, fromDate, toDate, msg.chat.id);
     } catch(e) {
         bot.sendMessage(msg.chat.id, lang.BAND_NOT_FOUND);
     }
@@ -79,21 +78,23 @@ async function askToDate(chatId) {
     });
 }
 
-async function getArtistEvents(artists, chatId) {
+async function getArtistEvents(artists, fromDate, toDate, chatId) {
     let artist = artists.resultsPage.results.artist[0];
     bot.sendMessage(chatId, lang.BAND_SEARCH(artist.displayName));
     artistSearchParams = {
-        artist: artist,
+        artist,
+        fromDate,
+        toDate,
         chatID: chatId
     };
     await getNextEventsByArtist();
 }
 
 async function getNextEventsByArtist() {
-    let { artist, chatID } = artistSearchParams;
+    let { artist, fromDate, toDate, chatID } = artistSearchParams;
     searchPage++;
 
-    let { eventsList, eventsCount } = await getEventsByArtist(artist, searchPage);
+    let { eventsList, eventsCount } = await getEventsByArtist(artist, fromDate, toDate, searchPage);
     let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
     bot.sendMessage(chatID, message);
 
@@ -115,7 +116,7 @@ bot.onText(/\/locations/, async msg => {
     let fromDate = await askFromDate(msg.chat.id);
     let toDate   = await askToDate(msg.chat.id);
     try {
-        await getCityEvents(cities, msg.chat.id);
+        await getCityEvents(cities, fromDate, toDate, msg.chat.id);
     } catch(e) {
         bot.sendMessage(msg.chat.id, lang.LOCATION_NOT_FOUND);
     }
@@ -131,24 +132,26 @@ async function askLocation(chatId) {
     });
 }
 
-async function getCityEvents(cities, chatId) {
+async function getCityEvents(cities, fromDate, toDate, chatId) {
     let location = cities.resultsPage.results.location[0];
     let city = location.city;
     let metroAreaID = location.metroArea.id;
     bot.sendMessage(chatId, lang.LOCATION_SEARCH(city.displayName));
     locationSearchParams = {
-        metroAreaID: metroAreaID,
-        city: city,
+        metroAreaID,
+        city,
+        fromDate,
+        toDate,
         chatID: chatId
     };
     await getNextEventsByMetroAreaID();
 }
 
 async function getNextEventsByMetroAreaID() {
-    let { metroAreaID, city, chatID } = locationSearchParams;
+    let { metroAreaID, city, fromDate, toDate, chatID } = locationSearchParams;
     searchPage++;
 
-    let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID, searchPage);
+    let { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID, fromDate, toDate, searchPage);
     let message = !eventsCount ? lang.EVENTS_NOT_FOUND : lang.EVENTS_FOUND(eventsCount);
     bot.sendMessage(chatID, message);
 

@@ -7,10 +7,11 @@ async function fetchLocation(location_query) {
         .query({ apikey: constants.API_KEY, query: location_query, per_page: constants.ITEMS_PER_PAGE });
 }
 
-async function fetchEventsByMetroAreaID(id, page) {
+async function fetchEventsByMetroAreaID(id, fromDate, toDate, page) {
     return request
         .get(`http://api.songkick.com/api/3.0/metro_areas/${id}/calendar.json`)
-        .query({ apikey: constants.API_KEY, per_page: constants.EVENTS_PER_PAGE, page: page });
+        .query({ apikey: constants.API_KEY, per_page: constants.EVENTS_PER_PAGE, page: page })
+        .query({ min_date: fromDate, max_date: toDate });
 }
 
 async function fetchArtist(artist_name) {
@@ -19,10 +20,11 @@ async function fetchArtist(artist_name) {
         .query({ apikey: constants.API_KEY, query: artist_name, per_page: constants.ITEMS_PER_PAGE });
 }
 
-async function fetchEventsByArtist(artist, page) {
+async function fetchEventsByArtist(artist, fromDate, toDate, page) {
     return request
         .get(artist.identifier[0].eventsHref)
-        .query({ apikey: constants.API_KEY, per_page: constants.EVENTS_PER_PAGE, page: page });
+        .query({ apikey: constants.API_KEY, per_page: constants.EVENTS_PER_PAGE, page: page })
+        .query({ min_date: fromDate, max_date: toDate });
 }
 
 module.exports = {
