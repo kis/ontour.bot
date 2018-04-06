@@ -179,7 +179,7 @@ function sendMessageWithNext(chatID, message) {
     });
 }
 
-bot.onText(/\/setlang/, (msg) => {
+bot.onText(/\/setlang/, async msg => {
     const chatId = msg.chat.id;
     bot.sendMessage(chatId, lang.SET_LANG, { 
         "parse_mode": "html",
@@ -192,16 +192,24 @@ bot.onText(/\/setlang/, (msg) => {
         }) 
     });
 
-    bot.once("message", (reply) => {
-        bot.sendMessage(msg.chat.id, lang.LANG_IS(reply.text));
-        
-        if (reply.text.indexOf(constants.LANG_EN) != -1) {
-            lang = langEn;
-        } else if (reply.text.indexOf(constants.LANG_RU) != -1) {
-            lang = langRu;
-        }
-    });
+    await setLanguage(msg.chat.id);
 });
+
+async function setLanguage(chatId) {
+    return await new Promise((resolve, reject) => {
+        bot.once("message", (reply) => {
+            bot.sendMessage(chatId, lang.LANG_IS(reply.text));
+            
+            if (reply.text.indexOf(constants.LANG_EN) != -1) {
+                lang = langEn;
+            } else if (reply.text.indexOf(constants.LANG_RU) != -1) {
+                lang = langRu;
+            }
+
+            resolve(true);
+        });
+    });
+}
 
 bot.onText(/\/echo (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
