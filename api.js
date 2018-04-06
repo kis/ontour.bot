@@ -8,6 +8,9 @@ async function fetchLocation(location_query) {
 }
 
 async function fetchEventsByMetroAreaID(id, fromDate, toDate, page) {
+    if (fromDate == 'Next') fromDate = null;
+    if (toDate == 'Next') toDate = null;
+
     return request
         .get(`http://api.songkick.com/api/3.0/metro_areas/${id}/calendar.json`)
         .query({ apikey: constants.API_KEY, per_page: constants.EVENTS_PER_PAGE, page: page })
@@ -21,6 +24,9 @@ async function fetchArtist(artist_name) {
 }
 
 async function fetchEventsByArtist(artist, fromDate, toDate, page) {
+    if (fromDate == 'Next') fromDate = null;
+    if (toDate == 'Next') toDate = null;
+
     return request
         .get(artist.identifier[0].eventsHref)
         .query({ apikey: constants.API_KEY, per_page: constants.EVENTS_PER_PAGE, page: page })
