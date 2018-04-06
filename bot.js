@@ -37,37 +37,43 @@ bot.onText(/\/help/, (msg) => {
     bot.sendMessage(msg.chat.id, lang.COMMANDS, { "parse_mode": "html" });
 });
 
-bot.onText(/\/artists/, (msg) => {
+bot.onText(/\/artists/, async msg => {
     bot.sendMessage(msg.chat.id, lang.BAND);
     searchType = constants.ARTISTS_SEARCH;
     searchPage = 0;
 
-    bot.once("message", async reply => {
-        let artists = await getArtists(reply.text);
-
-        if (!artists || !artists.resultsPage.results.artist) {
-            bot.sendMessage(msg.chat.id, lang.BAND_NOT_FOUND);
-            return;
-        }
-
-        sendMessageWithNext(msg.chat.id, lang.DATES_FROM);
-        getFromDate(artists, msg.chat.id);
-    });
+    let artists = await getArtist(msg.chat.id);
+    let date = await getFromDate(msg.chat.id);
+    let events = await getArtistEvents(artists, msg.chat.id);
 });
 
-async function getFromDate(artists, chatId) {
-    await new Promise((resolve, reject) => {
+async function getArtist(chatId) {
+    return await new Promise((resolve, reject) => {
+        bot.once("message", async reply => {
+            let artists = await getArtists(reply.text);
+    
+            if (!artists || !artists.resultsPage.results.artist) {
+                bot.sendMessage(chatId, lang.BAND_NOT_FOUND);
+                return;
+            }
+    
+            sendMessageWithNext(chatId, lang.DATES_FROM);
+            resolve(artists);
+        });
+    });
+}
+
+async function getFromDate(chatId) {
+    return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
             sendMessageWithNext(chatId, lang.DATES_TO);
-            getEvents(artists, chatId);
             resolve(true);
         });
     });
-    return;
 }
 
-async function getEvents(artists, chatId) {
-    await new Promise((resolve, reject) => {
+async function getArtistEvents(artists, chatId) {
+    return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
             let artist = artists.resultsPage.results.artist[0];
             bot.sendMessage(chatId, lang.BAND_SEARCH(artist.displayName));
@@ -79,7 +85,6 @@ async function getEvents(artists, chatId) {
             resolve(true);
         });
     });
-    return;
 }
 
 async function getNextEventsByArtist() {
@@ -100,31 +105,49 @@ async function getNextEventsByArtist() {
     sendMessageWithNext(chatID, eventTpl);
 }
 
-bot.onText(/\/locations/, (msg) => {
+bot.onText(/\/locations/, async msg => {
     bot.sendMessage(msg.chat.id, lang.LOCATION);
     searchType = constants.LOCATIONS_SEARCH;
     searchPage = 0;
 
-    bot.once("message", async reply => {
-        bot.sendMessage(msg.chat.id, lang.LOCATION_SEARCH(reply.text));
-        let cities = await getMetroAreas(reply.text);
-
-        if (!cities || !cities.resultsPage.results.location) {
-            bot.sendMessage(msg.chat.id, lang.LOCATION_NOT_FOUND);
-            return;
-        }
-
-        let location = cities.resultsPage.results.location[0];
-        let city = location.city;
-        let metroAreaID = location.metroArea.id;
-        locationSearchParams = {
-            metroAreaID: metroAreaID,
-            city: city,
-            chatID: msg.chat.id
-        };
-        await getNextEventsByMetroAreaID();
-    });
+    let cities = await getLocation(msg.chat.id);
+    let date = await getFromDate(msg.chat.id);
+    let events = await getCityEvents(cities, msg.chat.id);
 });
+
+async function getLocation(chatId) {
+    return await new Promise((resolve, reject) => {
+        bot.once("message", async reply => {
+            let cities = await getMetroAreas(reply.text);
+    
+            if (!cities || !cities.resultsPage.results.location) {
+                bot.sendMessage(chatId, lang.LOCATION_NOT_FOUND);
+                return;
+            }
+
+            sendMessageWithNext(chatId, lang.DATES_FROM);
+            resolve(cities);
+        });
+    });
+}
+
+async function getCityEvents(cities, chatId) {
+    return await new Promise((resolve, reject) => {
+        bot.once("message", async reply => {
+            let location = cities.resultsPage.results.location[0];
+            let city = location.city;
+            let metroAreaID = location.metroArea.id;
+            bot.sendMessage(chatId, lang.LOCATION_SEARCH(city.displayName));
+            locationSearchParams = {
+                metroAreaID: metroAreaID,
+                city: city,
+                chatID: chatId
+            };
+            await getNextEventsByMetroAreaID();
+            resolve(true);
+        });
+    });
+}
 
 async function getNextEventsByMetroAreaID() {
     let { metroAreaID, city, chatID } = locationSearchParams;
