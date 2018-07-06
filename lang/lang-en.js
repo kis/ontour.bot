@@ -11,6 +11,12 @@ const COMMANDS = `Commands: 💬
 /setlang - set bot language
 /help - get help`;
 
+const DATE_COMMANDS = `For searching concerts by dates: 💬
+/today - show only today concerts
+/next_week - show only next week concerts
+/next_month - show only next month concerts
+/enter_dates - enter start date and end date`;
+
 const SET_LANG = 'Choose the language ;)';
 
 const LANG_IS = lang => `Bot language set to ${lang}. Press /start`;
@@ -44,6 +50,7 @@ const langEn = {
     LANG_IS,
     WELCOME,
     COMMANDS,
+    DATE_COMMANDS,
     BAND,
     BAND_SEARCH,
     BAND_NOT_FOUND,

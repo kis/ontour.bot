@@ -1,5 +1,4 @@
 const moment = require('moment');
-const { lang } = require('./lang/lang-en');
 
 const { 
     fetchArtist, 

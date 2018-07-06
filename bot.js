@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const moment = require('moment');
 const token = process.env.TOKEN;
 const { constants } = require('./constants');
 const { langEn } = require('./lang/lang-en');
@@ -41,8 +42,11 @@ bot.onText(/\/artists/, async msg => {
     searchPage = 0;
 
     let artists  = await askArtist(msg.chat.id);
-    let fromDate = await askFromDate(msg.chat.id);
-    let toDate   = await askToDate(msg.chat.id);
+    let datesRes = await askDates(msg.chat.id);
+    let dates = await getDates(datesRes, msg); 
+    let { fromDate } = dates;
+    let { toDate }   = dates;
+
     try {
         setArtistSearchParams(artists, fromDate, toDate, msg.chat.id);
         await getNextEventsByArtist();
@@ -61,10 +65,20 @@ async function askArtist(chatId) {
     });
 }
 
+async function askDates(chatId) {
+    sendMessageWithNext(chatId, lang.DATE_COMMANDS, constants.REPLY_OPTIONS);
+    return await new Promise((resolve, reject) => {
+        bot.once("message", async reply => {
+            resolve(reply.text);
+        });
+    });
+}
+
 async function askFromDate(chatId) {
     sendMessageWithNext(chatId, lang.DATES_FROM);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
+            if (reply.text == lang.NEXT) resolve(null);
             resolve(reply.text);
         });
     });
@@ -74,6 +88,7 @@ async function askToDate(chatId) {
     sendMessageWithNext(chatId, lang.DATES_TO);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
+            if (reply.text == lang.NEXT) resolve(null);
             resolve(reply.text);
         });
     });
@@ -113,8 +128,11 @@ bot.onText(/\/locations/, async msg => {
     searchPage = 0;
 
     let cities   = await askLocation(msg.chat.id);
-    let fromDate = await askFromDate(msg.chat.id);
-    let toDate   = await askToDate(msg.chat.id);
+    let datesRes = await askDates(msg.chat.id);
+    let dates = await getDates(datesRes, msg); 
+    let { fromDate } = dates;
+    let { toDate }   = dates;
+
     try {
         setCitySearchParams(cities, fromDate, toDate, msg.chat.id);
         await getNextEventsByMetroAreaID();
@@ -206,5 +224,33 @@ bot.on('message', async msg => {
         }
     }
 });
+
+async function getDates(datesRes, msg) {
+    let fromDate = null;
+    let toDate = null;
+
+    switch (datesRes) {
+        case '/today':
+            fromDate = moment().format('YYYY-MM-DD');
+            toDate   = moment().format('YYYY-MM-DD');
+            break;
+        case '/next_week':
+            fromDate = moment().format('YYYY-MM-DD');
+            toDate   = moment().add(7, 'days').format('YYYY-MM-DD');
+            break;
+        case '/next_month':
+            fromDate = moment().format('YYYY-MM-DD');
+            toDate   = moment().add(31, 'days').format('YYYY-MM-DD');
+            break;
+        case '/enter_dates':
+            fromDate = await askFromDate(msg.chat.id);
+            toDate   = await askToDate(msg.chat.id);
+            break;
+        default:
+            break;
+    }
+
+    return { fromDate, toDate };
+}
 
 module.exports = bot;
