@@ -22,8 +22,8 @@ async function getDates(datesRes, msg) {
             toDate   = moment().add(31, 'days').format('YYYY-MM-DD');
             break;
         case '/enter_dates':
-            fromDate = await askFromDate(msg.chat.id);
-            toDate   = await askToDate(msg.chat.id);
+            fromDate = await askDate(msg.chat.id, getLanguage().DATES_FROM);
+            toDate   = await askDate(msg.chat.id, getLanguage().DATES_TO);
             break;
         default:
             break;
@@ -41,18 +41,8 @@ async function askDates(chatId) {
     });
 }
 
-async function askFromDate(chatId) {
-    sendMessageWithNext(chatId, getLanguage().DATES_FROM);
-    return await new Promise((resolve, reject) => {
-        bot.once("message", async reply => {
-            if (reply.text == getLanguage().NEXT) resolve(null);
-            resolve(reply.text);
-        });
-    });
-}
-
-async function askToDate(chatId) {
-    sendMessageWithNext(chatId, getLanguage().DATES_TO);
+async function askDate(chatId, date) {
+    sendMessageWithNext(chatId, date);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
             if (reply.text == getLanguage().NEXT) resolve(null);
