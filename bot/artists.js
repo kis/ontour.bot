@@ -1,8 +1,7 @@
-let { getDates, askDates, sendMessageWithNext } = require('./shared');
+const { getDates, askDates, sendMessageWithNext } = require('./shared');
 const { constants } = require('../constants');
 const bot = require('../bot');
-
-const { getLanguage, setLanguage } = require('../lang/instance');
+const { getLanguage } = require('../lang/instance');
 
 const { 
     getEventsListTemplate, 
