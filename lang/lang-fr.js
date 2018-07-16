@@ -1,6 +1,7 @@
 const WELCOME = name => `Bonjour, ${name}! 😄😉 
 🎸 Pour rechercher des concerts par des groupes de musique entrez le /artists.
 🌎 Pour rechercher des événements par ville entrez le /locations.
+📌 Pour rechercher des événements par emplacement entrez le /mylocation.
 🆘 Pour vérifier la liste des commandes disponibles entrez le /help.
 🎓 Pour définir la langue du bot entrez le /setlang.`;
 
@@ -8,6 +9,7 @@ const COMMANDS = `Commandes: 💬
 /start - démarrer le bot
 /artists - recherche de concerts par groupes de musique
 /locations - recherche d'événements par villes
+/mylocation - rechercher des événements par emplacement
 /setlang - définit la langue du bot
 /help - obtenir de l'aide`;
 
@@ -28,6 +30,8 @@ const BAND_SEARCH = band => `Recherchons la tournée de ${band}...`;
 const BAND_NOT_FOUND = 'Désolé, je n\'ai pas trouvé cet artiste :(';
 
 const LOCATION = "Cool, tapez maintenant la ville";
+
+const MY_LOCATION = "Cool, où es-tu?";
 
 const LOCATION_SEARCH = location => `Recherchons les événements dans ${location}...`;
 
@@ -55,6 +59,7 @@ const langFr = {
     BAND_SEARCH,
     BAND_NOT_FOUND,
     LOCATION,
+    MY_LOCATION,
     LOCATION_SEARCH,
     LOCATION_NOT_FOUND,
     DATES_FROM,

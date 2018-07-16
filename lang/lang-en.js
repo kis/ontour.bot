@@ -1,6 +1,7 @@
 const WELCOME = name => `Welcome, ${name}! 😄😉 
 🎸 To search concerts by music bands type /artists.
 🌎 To search events by cities type /locations.
+📌 To search events by my location type /mylocation.
 🆘 To check the list of available command type /help.
 🎓 To set bot language type /setlang.`;
 
@@ -8,6 +9,7 @@ const COMMANDS = `Commands: 💬
 /start - start bot
 /artists - search concerts by music bands
 /locations - search events by cities
+/mylocation - search events by my location
 /setlang - set bot language
 /help - get help`;
 
@@ -28,6 +30,8 @@ const BAND_SEARCH = band => `Let's search for ${band}'s tour...`;
 const BAND_NOT_FOUND = 'Sorry, I haven\'t found such artist :(';
 
 const LOCATION = "Cool, now type the city";
+
+const MY_LOCATION = "Cool, where are you, which city?";
 
 const LOCATION_SEARCH = location => `Let's search for events in ${location}...`;
 
@@ -55,6 +59,7 @@ const langEn = {
     BAND_SEARCH,
     BAND_NOT_FOUND,
     LOCATION,
+    MY_LOCATION,
     LOCATION_SEARCH,
     LOCATION_NOT_FOUND,
     DATES_FROM,

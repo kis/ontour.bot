@@ -17,6 +17,17 @@ const REPLY_OPTIONS = {
     })
 };
 
+const REPLY_LOCATION = { 
+    "parse_mode": "Markdown",
+    "reply_markup": {
+        "one_time_keyboard": true,
+        "keyboard": [[{
+            text: "My location",
+            request_location: true
+        }], ["Cancel"]]
+    }
+};
+
 const KEYBOARD_NEXT_OPTIONS = lang => ({ 
     "parse_mode": "html",
     "reply_markup": JSON.stringify({
@@ -50,7 +61,8 @@ const constants = {
     LANG_FR,
     KEYBOARD_LANGUAGE_OPTIONS,
     KEYBOARD_NEXT_OPTIONS,
-    REPLY_OPTIONS
+    REPLY_OPTIONS,
+    REPLY_LOCATION
 };
 
 module.exports = {

@@ -89,3 +89,19 @@ bot.on('message', async msg => {
         }
     }
 });
+
+bot.onText(/\/mylocation/, async msg => {
+    setSearchType(constants.LOCATIONS_SEARCH);
+    setSearchPage(0);
+
+    const cities   = await askMyLocation(msg.chat.id);
+});
+
+async function askMyLocation(chatId) {
+    bot.sendMessage(chatId, getLanguage().MY_LOCATION, constants.REPLY_LOCATION);
+    return await new Promise((resolve, reject) => {
+        bot.once("location", async reply => {
+            bot.sendMessage(reply.chat.id, "Your location is " + [reply.location.longitude, reply.location.latitude].join(";"));
+        });
+    });
+}
