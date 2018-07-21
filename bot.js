@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TOKEN;
 const { constants } = require('./constants');
+const { log } = require('./logger');
 
 const { getLanguage, setLanguage } = require('./lang/instance');
 
@@ -21,7 +22,8 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('Bot server started in the ' + process.env.NODE_ENV + ' mode');
 
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/start/, async msg => {
+    await log(constants.EVENT_STARTED, msg);
     bot.sendMessage(msg.chat.id, getLanguage().WELCOME(msg.from.first_name), constants.REPLY_OPTIONS);
 });
 

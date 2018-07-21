@@ -1,4 +1,7 @@
 const API_KEY = 'iOAsnWYdLjjhNvvM';
+const AMPLITUDE_API_KEY = '928800c56593ab5a46b191aaf8c31b66';
+
+const EVENT_STARTED = 'Bot started';
 
 const ITEMS_PER_PAGE = 1;
 const EVENTS_PER_PAGE = 5;
@@ -52,6 +55,8 @@ const KEYBOARD_LANGUAGE_OPTIONS = {
 
 const constants = {
     API_KEY,
+    AMPLITUDE_API_KEY,
+    EVENT_STARTED,
     ITEMS_PER_PAGE,
     EVENTS_PER_PAGE,
     ARTISTS_SEARCH,

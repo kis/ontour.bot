@@ -1,6 +1,24 @@
 const request = require('superagent');
 const { constants } = require('./constants');
 
+async function logEvent(event, userID, props, userProps) {
+    let eventData = {
+        user_id: userID,
+        event_type: event
+    };
+
+    if (props) {
+        eventData.event_properties = props;
+    }
+    if (userProps) {
+        eventData.user_properties = userProps;
+    }
+
+    return request
+        .post('https://api.amplitude.com/httpapi')
+        .query({ api_key: constants.AMPLITUDE_API_KEY, event: JSON.stringify(eventData) });
+}
+
 async function fetchLocation(location_query) {
     return request
         .get('http://api.songkick.com/api/3.0/search/locations.json')
@@ -28,6 +46,7 @@ async function fetchEventsByArtist(artist, fromDate, toDate, page) {
 }
 
 module.exports = {
+    logEvent,
     fetchArtist,
     fetchEventsByArtist,
     fetchLocation,
