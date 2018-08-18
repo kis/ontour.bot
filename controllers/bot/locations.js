@@ -1,4 +1,5 @@
-const { getDates, askDates, sendMessageWithNext } = require('./shared');
+const { getDates, askDates, sendMessageWithNext } = require('../utils/shared');
+const constantsSearch = require('../../constants/constants-search');
 const { constants } = require('../../constants/constants');
 const bot = require('../../instances/bot');
 const { getLanguage } = require('../../lang/instance');
@@ -7,7 +8,7 @@ const {
     getEventsListTemplate, 
     getMetroAreas,
     getEventsByMetroAreaID 
-} = require('./utils');
+} = require('../utils/utils');
 
 const {
     setSearchType,
@@ -16,10 +17,10 @@ const {
     getSearchPage,
     setLocationSearchParams,
     getLocationSearchParams
-} = require('./params');
+} = require('../utils/params');
 
 bot.onText(/\/locations/, async msg => {
-    setSearchType(constants.LOCATIONS_SEARCH);
+    setSearchType(constantsSearch.LOCATIONS_SEARCH);
     setSearchPage(0);
 
     const cities   = await askLocation(msg.chat.id);
@@ -72,8 +73,8 @@ async function getNextEventsByMetroAreaID() {
 
     if (!eventsList.event || !eventsList.event.length) return;
 
-    let eventTpl = getEventsListTemplate(eventsList, city, constants.LOCATIONS_SEARCH);
-    if (getSearchPage() * constants.EVENTS_PER_PAGE > eventsCount) {
+    let eventTpl = getEventsListTemplate(eventsList, city, constantsSearch.LOCATIONS_SEARCH);
+    if (getSearchPage() * constantsSearch.EVENTS_PER_PAGE > eventsCount) {
         setLocationSearchParams(null);
         eventTpl += getLanguage().FINISHED;
     }
@@ -84,14 +85,14 @@ bot.on('message', async msg => {
     const chatId = msg.chat.id;
 
     if (msg.text === getLanguage().NEXT) {
-        if (getLocationSearchParams() && getSearchType() === constants.LOCATIONS_SEARCH) { 
+        if (getLocationSearchParams() && getSearchType() === constantsSearch.LOCATIONS_SEARCH) { 
             await getNextEventsByMetroAreaID();
         }
     }
 });
 
 bot.onText(/\/mylocation/, async msg => {
-    setSearchType(constants.LOCATIONS_SEARCH);
+    setSearchType(constantsSearch.LOCATIONS_SEARCH);
     setSearchPage(0);
 
     const cities   = await askMyLocation(msg.chat.id);

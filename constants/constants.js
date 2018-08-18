@@ -1,11 +1,5 @@
 const constantsLangs = require('./constants-langs');
 
-const ITEMS_PER_PAGE = 1;
-const EVENTS_PER_PAGE = 5;
-
-const ARTISTS_SEARCH = 'artists';
-const LOCATIONS_SEARCH = 'location';
-
 const REPLY_OPTIONS = { 
     "parse_mode": "html",
     "reply_markup": JSON.stringify({
@@ -47,10 +41,6 @@ const KEYBOARD_LANGUAGE_OPTIONS = {
 };
 
 const constants = {
-    ITEMS_PER_PAGE,
-    EVENTS_PER_PAGE,
-    ARTISTS_SEARCH,
-    LOCATIONS_SEARCH,
     KEYBOARD_LANGUAGE_OPTIONS,
     KEYBOARD_NEXT_OPTIONS,
     REPLY_OPTIONS,

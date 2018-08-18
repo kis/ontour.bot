@@ -1,4 +1,5 @@
-const { getDates, askDates, sendMessageWithNext } = require('./shared');
+const { getDates, askDates, sendMessageWithNext } = require('../utils/shared');
+const constantsSearch = require('../../constants/constants-search');
 const { constants } = require('../../constants/constants');
 const bot = require('../../instances/bot');
 const { getLanguage } = require('../../lang/instance');
@@ -7,7 +8,7 @@ const {
     getEventsListTemplate, 
     getArtists, 
     getEventsByArtist,
-} = require('./utils');
+} = require('../utils/utils');
 
 const {
     setSearchType,
@@ -16,10 +17,10 @@ const {
     getSearchPage,
     setArtistSearchParams,
     getArtistSearchParams,
-} = require('./params');
+} = require('../utils/params');
 
 bot.onText(/\/artists/, async msg => {
-    setSearchType(constants.ARTISTS_SEARCH);
+    setSearchType(constantsSearch.ARTISTS_SEARCH);
     setSearchPage(0);
 
     const artists  = await askArtist(msg.chat.id);
@@ -69,8 +70,8 @@ async function getNextEventsByArtist() {
 
     if (!eventsList.event || !eventsList.event.length) return;
 
-    let eventTpl = getEventsListTemplate(eventsList, artist, constants.ARTISTS_SEARCH);
-    if (getSearchPage() * constants.EVENTS_PER_PAGE > eventsCount) {
+    let eventTpl = getEventsListTemplate(eventsList, artist, constantsSearch.ARTISTS_SEARCH);
+    if (getSearchPage() * constantsSearch.EVENTS_PER_PAGE > eventsCount) {
         setArtistSearchParams(null);
         eventTpl += getLanguage().FINISHED;
     }
@@ -81,7 +82,7 @@ bot.on('message', async msg => {
     const chatId = msg.chat.id;
 
     if (msg.text === getLanguage().NEXT) {
-        if (getArtistSearchParams() && getSearchType() === constants.ARTISTS_SEARCH) {
+        if (getArtistSearchParams() && getSearchType() === constantsSearch.ARTISTS_SEARCH) {
             await getNextEventsByArtist();
         }
     }
