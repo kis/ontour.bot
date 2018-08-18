@@ -1,6 +1,5 @@
 const request = require('superagent');
 const config = require('./config/config');
-const { constants } = require('./constants/constants');
 const constantsSearch = require('./constants/constants-search');
 
 async function fetchLocation(location_query) {

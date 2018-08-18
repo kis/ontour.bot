@@ -1,6 +1,6 @@
 const { getDates, askDates, sendMessageWithNext } = require('../utils/shared');
 const constantsSearch = require('../../constants/constants-search');
-const { constants } = require('../../constants/constants');
+const constantsReply = require('../../constants/constants-reply');
 const bot = require('../../instances/bot');
 const { getLanguage } = require('../../lang/instance');
 
@@ -33,12 +33,12 @@ bot.onText(/\/artists/, async msg => {
         setSearchParams(artists, fromDate, toDate, msg.chat.id);
         await getNextEventsByArtist();
     } catch(e) {
-        bot.sendMessage(msg.chat.id, getLanguage().BAND_NOT_FOUND, constants.REPLY_OPTIONS);
+        bot.sendMessage(msg.chat.id, getLanguage().BAND_NOT_FOUND, constantsReply.REPLY_OPTIONS);
     }
 });
 
 async function askArtist(chatId) {
-    bot.sendMessage(chatId, getLanguage().BAND, constants.REPLY_OPTIONS);
+    bot.sendMessage(chatId, getLanguage().BAND, constantsReply.REPLY_OPTIONS);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
             const artists = await getArtists(reply.text);
@@ -49,7 +49,7 @@ async function askArtist(chatId) {
 
 function setSearchParams(artists, fromDate, toDate, chatID) {
     const artist = artists.resultsPage.results.artist[0];
-    bot.sendMessage(chatID, getLanguage().BAND_SEARCH(artist.displayName), constants.REPLY_OPTIONS);
+    bot.sendMessage(chatID, getLanguage().BAND_SEARCH(artist.displayName), constantsReply.REPLY_OPTIONS);
     setArtistSearchParams({
         artist,
         fromDate,
@@ -66,7 +66,7 @@ async function getNextEventsByArtist() {
 
     const { eventsList, eventsCount } = await getEventsByArtist(artist, fromDate, toDate, searchPage);
     const message = !eventsCount ? getLanguage().EVENTS_NOT_FOUND : getLanguage().EVENTS_FOUND(eventsCount);
-    bot.sendMessage(chatID, message, constants.REPLY_OPTIONS);
+    bot.sendMessage(chatID, message, constantsReply.REPLY_OPTIONS);
 
     if (!eventsList.event || !eventsList.event.length) return;
 

@@ -40,13 +40,9 @@ const KEYBOARD_LANGUAGE_OPTIONS = {
     }) 
 };
 
-const constants = {
+module.exports = {
     KEYBOARD_LANGUAGE_OPTIONS,
     KEYBOARD_NEXT_OPTIONS,
     REPLY_OPTIONS,
     REPLY_LOCATION
-};
-
-module.exports = {
-    constants
 }

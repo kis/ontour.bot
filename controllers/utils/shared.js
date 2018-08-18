@@ -1,5 +1,5 @@
 const bot = require('../../instances/bot');
-const { constants } = require('../../constants/constants');
+const constantsReply = require('../../constants/constants-reply');
 const moment = require('moment');
 
 const { getLanguage, setLanguage } = require('../../lang/instance');
@@ -33,7 +33,7 @@ async function getDates(datesRes, msg) {
 }
 
 async function askDates(chatId) {
-    sendMessageWithNext(chatId, getLanguage().DATE_COMMANDS, constants.REPLY_OPTIONS);
+    sendMessageWithNext(chatId, getLanguage().DATE_COMMANDS, constantsReply.REPLY_OPTIONS);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
             resolve(reply.text);
@@ -52,7 +52,7 @@ async function askDate(chatId, date) {
 }
 
 function sendMessageWithNext(chatID, message) {
-    bot.sendMessage(chatID, message, constants.KEYBOARD_NEXT_OPTIONS(getLanguage()));
+    bot.sendMessage(chatID, message, constantsReply.KEYBOARD_NEXT_OPTIONS(getLanguage()));
 }
 
 module.exports = {

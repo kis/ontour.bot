@@ -1,6 +1,6 @@
 const { getDates, askDates, sendMessageWithNext } = require('../utils/shared');
 const constantsSearch = require('../../constants/constants-search');
-const { constants } = require('../../constants/constants');
+const constantsReply = require('../../constants/constants-reply');
 const bot = require('../../instances/bot');
 const { getLanguage } = require('../../lang/instance');
 
@@ -33,12 +33,12 @@ bot.onText(/\/locations/, async msg => {
         setSearchParams(cities, fromDate, toDate, msg.chat.id);
         await getNextEventsByMetroAreaID();
     } catch(e) {
-        bot.sendMessage(msg.chat.id, getLanguage().LOCATION_NOT_FOUND, constants.REPLY_OPTIONS);
+        bot.sendMessage(msg.chat.id, getLanguage().LOCATION_NOT_FOUND, constantsReply.REPLY_OPTIONS);
     }
 });
 
 async function askLocation(chatId) {
-    bot.sendMessage(chatId, getLanguage().LOCATION, constants.REPLY_OPTIONS);
+    bot.sendMessage(chatId, getLanguage().LOCATION, constantsReply.REPLY_OPTIONS);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
             const cities = await getMetroAreas(reply.text);
@@ -51,7 +51,7 @@ function setSearchParams(cities, fromDate, toDate, chatID) {
     const location = cities.resultsPage.results.location[0];
     const city = location.city;
     const metroAreaID = location.metroArea.id;
-    bot.sendMessage(chatID, getLanguage().LOCATION_SEARCH(city.displayName), constants.REPLY_OPTIONS);
+    bot.sendMessage(chatID, getLanguage().LOCATION_SEARCH(city.displayName), constantsReply.REPLY_OPTIONS);
     setLocationSearchParams({
         metroAreaID,
         city,
@@ -69,7 +69,7 @@ async function getNextEventsByMetroAreaID() {
 
     const { eventsList, eventsCount } = await getEventsByMetroAreaID(metroAreaID, fromDate, toDate, searchPage);
     const message = !eventsCount ? getLanguage().EVENTS_NOT_FOUND : getLanguage().EVENTS_FOUND(eventsCount);
-    bot.sendMessage(chatID, message, constants.REPLY_OPTIONS);
+    bot.sendMessage(chatID, message, constantsReply.REPLY_OPTIONS);
 
     if (!eventsList.event || !eventsList.event.length) return;
 
@@ -99,7 +99,7 @@ bot.onText(/\/mylocation/, async msg => {
 });
 
 async function askMyLocation(chatId) {
-    bot.sendMessage(chatId, getLanguage().MY_LOCATION, constants.REPLY_LOCATION);
+    bot.sendMessage(chatId, getLanguage().MY_LOCATION, constantsReply.REPLY_LOCATION);
     return await new Promise((resolve, reject) => {
         bot.once("location", async reply => {
             bot.sendMessage(reply.chat.id, "Your location is " + [reply.location.longitude, reply.location.latitude].join(";"));
