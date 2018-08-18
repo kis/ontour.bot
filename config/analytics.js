@@ -1,7 +1,7 @@
-const { constants } = require('../constants/constants');
+const config = require('./config');
 
 const Analytics = require('analytics-node');
-const analytics = new Analytics(constants.SEGMENT_API_KEY);
+const analytics = new Analytics(config.SEGMENT_API_KEY);
 
 function getAnalytics() {
     return analytics;

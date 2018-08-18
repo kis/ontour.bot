@@ -2,19 +2,19 @@ const { langEn } = require('./lang-en');
 const { langRu } = require('./lang-ru');
 const { langFr } = require('./lang-fr');
 
-const { constants } = require('../constants/constants');
+const constantsLangs = require('../constants/constants-langs');
 
 let currentLanguage = langEn;
 
 function setLanguage(lang) {
     switch(lang) {
-        case constants.LANG_EN:
+        case constantsLangs.LANG_EN:
             currentLanguage = langEn;
             break;
-        case constants.LANG_RU:
+        case constantsLangs.LANG_RU:
             currentLanguage = langRu;
             break;
-        case constants.LANG_FR:
+        case constantsLangs.LANG_FR:
             currentLanguage = langFr;
             break;
         default:

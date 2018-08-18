@@ -1,19 +1,10 @@
-const API_KEY = 'iOAsnWYdLjjhNvvM';
-const AMPLITUDE_API_KEY = '928800c56593ab5a46b191aaf8c31b66';
-const SEGMENT_API_KEY = 'G9eqLxZW5CHlhiwnWGRRbRmDLlvBYxtw';
-
-const EVENT_STARTED = 'Bot started';
-const EVENT_LANG_CHANGED = 'Bot language changed';
+const constantsLangs = require('./constants-langs');
 
 const ITEMS_PER_PAGE = 1;
 const EVENTS_PER_PAGE = 5;
 
 const ARTISTS_SEARCH = 'artists';
 const LOCATIONS_SEARCH = 'location';
-
-const LANG_EN = 'English';
-const LANG_RU = 'Russian';
-const LANG_FR = 'French';
 
 const REPLY_OPTIONS = { 
     "parse_mode": "html",
@@ -47,27 +38,19 @@ const KEYBOARD_LANGUAGE_OPTIONS = {
     "parse_mode": "html",
     "reply_markup": JSON.stringify({
         "keyboard": [
-            [{text: `🇺🇸 ${LANG_EN}`}],
-            [{text: `🇷🇺 ${LANG_RU}`}],
-            [{text: `🇫🇷 ${LANG_FR}`}]
+            [{text: `🇺🇸 ${constantsLangs.LANG_EN}`}],
+            [{text: `🇷🇺 ${constantsLangs.LANG_RU}`}],
+            [{text: `🇫🇷 ${constantsLangs.LANG_FR}`}]
         ],
         "one_time_keyboard": true
     }) 
 };
 
 const constants = {
-    API_KEY,
-    AMPLITUDE_API_KEY,
-    SEGMENT_API_KEY,
-    EVENT_STARTED,
-    EVENT_LANG_CHANGED,
     ITEMS_PER_PAGE,
     EVENTS_PER_PAGE,
     ARTISTS_SEARCH,
     LOCATIONS_SEARCH,
-    LANG_EN,
-    LANG_RU,
-    LANG_FR,
     KEYBOARD_LANGUAGE_OPTIONS,
     KEYBOARD_NEXT_OPTIONS,
     REPLY_OPTIONS,

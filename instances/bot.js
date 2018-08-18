@@ -1,13 +1,13 @@
 const TelegramBot = require('node-telegram-bot-api');
-const { token, herokuUrl } = require('../config/telegram');
+const { TELEGRAM_TOKEN, HEROKU_URL } = require('../config/config');
 
 let bot;
 
 if (process.env.NODE_ENV === 'production') {
-    bot = new TelegramBot(token);
-    bot.setWebHook(herokuUrl + bot.token);
+    bot = new TelegramBot(TELEGRAM_TOKEN);
+    bot.setWebHook(HEROKU_URL + bot.token);
 } else {
-    bot = new TelegramBot(token, { polling: true });
+    bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 }
 
 module.exports = bot;
