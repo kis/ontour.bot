@@ -1,5 +1,5 @@
 const request = require('superagent');
-const { constants } = require('./constants');
+const { constants } = require('./constants/constants');
 
 // async function logEvent(event, userID, props, userProps) {
 //     let eventData = {

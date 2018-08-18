@@ -1,13 +1,13 @@
 const { getDates, askDates, sendMessageWithNext } = require('./shared');
-const { constants } = require('../constants');
-const bot = require('../bot');
-const { getLanguage } = require('../lang/instance');
+const { constants } = require('../../constants/constants');
+const bot = require('../../instances/bot');
+const { getLanguage } = require('../../lang/instance');
 
 const { 
     getEventsListTemplate, 
     getArtists, 
     getEventsByArtist,
-} = require('../utils');
+} = require('./utils');
 
 const {
     setSearchType,

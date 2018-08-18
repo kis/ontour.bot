@@ -1,8 +1,8 @@
-const bot = require('../bot');
-const { constants } = require('../constants');
+const bot = require('../../instances/bot');
+const { constants } = require('../../constants/constants');
 const moment = require('moment');
 
-const { getLanguage, setLanguage } = require('../lang/instance');
+const { getLanguage, setLanguage } = require('../../lang/instance');
 
 async function getDates(datesRes, msg) {
     let fromDate = null;

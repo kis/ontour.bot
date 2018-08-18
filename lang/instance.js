@@ -2,7 +2,7 @@ const { langEn } = require('./lang-en');
 const { langRu } = require('./lang-ru');
 const { langFr } = require('./lang-fr');
 
-const { constants } = require('../constants');
+const { constants } = require('../constants/constants');
 
 let currentLanguage = langEn;
 

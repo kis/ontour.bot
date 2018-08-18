@@ -5,9 +5,9 @@ const {
     fetchEventsByArtist, 
     fetchLocation, 
     fetchEventsByMetroAreaID 
-} = require('./api');
+} = require('../../api');
 
-const { constants } = require('./constants');
+const { constants } = require('../../constants/constants');
 
 function getEventsListTemplate(eventsList, value, type) {
     let eventTpl;

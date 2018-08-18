@@ -1,4 +1,4 @@
-const { constants } = require('./constants');
+const { constants } = require('../constants/constants');
 
 const Analytics = require('analytics-node');
 const analytics = new Analytics(constants.SEGMENT_API_KEY);
