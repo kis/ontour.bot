@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
     console.log('telegram', TELEGRAM_TOKEN)
     bot = new TelegramBot(TELEGRAM_TOKEN, options);
     bot.setWebHook(`${HEROKU_URL}/bot${TELEGRAM_TOKEN}`);
-    console.log('webhook setted', `${HEROKU_URL}/${TELEGRAM_TOKEN}`);
+    console.log('webhook setted', `${HEROKU_URL}/bot${TELEGRAM_TOKEN}`);
 } else {
     bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 }

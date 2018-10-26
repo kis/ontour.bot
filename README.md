@@ -1,4 +1,5 @@
 debug heroku deploy logs   
 heroku login  
-heroku logs --tail   
+heroku local web - start app locally  
+heroku logs --tail - check production logs   
 https://ontour-bot.herokuapp.com/  
