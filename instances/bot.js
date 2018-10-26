@@ -4,8 +4,10 @@ const { TELEGRAM_TOKEN, HEROKU_URL } = require('../config/config');
 let bot;
 
 if (process.env.NODE_ENV === 'production') {
+    console.log('telegram', TELEGRAM_TOKEN)
     bot = new TelegramBot(TELEGRAM_TOKEN);
     bot.setWebHook(HEROKU_URL + bot.token);
+    console.log('webhook setted', HEROKU_URL + bot.token)
 } else {
     bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 }
