@@ -15,7 +15,7 @@ var server = app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log('Web server started at http://%s:%s', host, port);
 });
 
-module.exports = (bot) => {
+module.exports = function (bot) {
   app.post('/' + bot.token, function (req, res) {
     console.log('mes', req.body);
     bot.processUpdate(req.body);
