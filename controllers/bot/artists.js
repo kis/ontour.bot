@@ -1,8 +1,11 @@
-const { getDates, askDates, sendMessageWithNext } = require('../utils/shared');
+const bot = require('../../instances/bot');
 const constantsSearch = require('../../constants/constants-search');
 const constantsReply = require('../../constants/constants-reply');
-const bot = require('../../instances/bot');
 const { getLanguage } = require('../../lang/instance');
+const { getDates, askDates, sendMessageWithNext } = require('../utils/shared');
+
+const { log } = require('../../config/logger');
+const constantsEvents = require('../../constants/constants-events');
 
 const { 
     getEventsListTemplate, 
@@ -41,6 +44,7 @@ async function askArtist(chatId) {
     bot.sendMessage(chatId, getLanguage().BAND, constantsReply.REPLY_OPTIONS);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
+            await log(reply, constantsEvents.EVENT_LOCATION_SEARCH, reply.text);
             const artists = await getArtists(reply.text);
             resolve(artists);
         });

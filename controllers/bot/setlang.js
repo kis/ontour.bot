@@ -1,9 +1,10 @@
 const bot = require('../../instances/bot');
 const constantsReply = require('../../constants/constants-reply');
-const constantsEvents = require('../../constants/constants-events');
 const constantsLangs = require('../../constants/constants-langs');
 const { getLanguage, setLanguage } = require('../../lang/instance');
+
 const { log } = require('../../config/logger');
+const constantsEvents = require('../../constants/constants-events');
 
 bot.onText(/\/setlang/, async msg => {
     const chatId = msg.chat.id;

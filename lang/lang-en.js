@@ -27,7 +27,7 @@ const BAND = "Cool, now type the name of the band";
 
 const BAND_SEARCH = band => `Let's search for ${band}'s tour...`;
 
-const BAND_NOT_FOUND = 'Sorry, I haven\'t found such artist :(';
+const BAND_NOT_FOUND = 'Sorry, I haven\'t found such artist :( Press /start to new search';
 
 const LOCATION = "Cool, now type the city";
 
@@ -35,13 +35,13 @@ const MY_LOCATION = "Cool, where are you, which city?";
 
 const LOCATION_SEARCH = location => `Let's search for events in ${location}...`;
 
-const LOCATION_NOT_FOUND = 'Sorry, I haven\'t found such city :(';
+const LOCATION_NOT_FOUND = 'Sorry, I haven\'t found such city :( Press /start to new search';
 
 const DATES_FROM = 'Please type FROM DATE (YYYY-MM-DD) of the concerts to search, or press Next to skip';
 
 const DATES_TO = 'Please type TO DATE (YYYY-MM-DD) of the concerts to search, or press Next to skip';
 
-const EVENTS_NOT_FOUND = 'I haven\'t found any concerts, sorry :(';
+const EVENTS_NOT_FOUND = 'I haven\'t found any concerts, sorry :( Press /start to new search';
 
 const EVENTS_FOUND = count => `Found ${count} concerts, I will group it 5 per message, please continue with tap on Next`;
 

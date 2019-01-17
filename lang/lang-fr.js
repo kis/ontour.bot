@@ -27,7 +27,7 @@ const BAND = "Cool, tape maintenant le nom du groupe";
 
 const BAND_SEARCH = band => `Recherchons la tournée de ${band}...`;
 
-const BAND_NOT_FOUND = 'Désolé, je n\'ai pas trouvé cet artiste :(';
+const BAND_NOT_FOUND = 'Désolé, je n\'ai pas trouvé cet artiste :( Appuyez sur /start';
 
 const LOCATION = "Cool, tapez maintenant la ville";
 
@@ -35,13 +35,13 @@ const MY_LOCATION = "Cool, où es-tu?";
 
 const LOCATION_SEARCH = location => `Recherchons les événements dans ${location}...`;
 
-const LOCATION_NOT_FOUND = 'Désolé, je n\'ai pas trouvé une telle ville :(';
+const LOCATION_NOT_FOUND = 'Désolé, je n\'ai pas trouvé une telle ville :( Appuyez sur /start';
 
 const DATES_FROM = 'Veuillez taper FROM DATE (YYYY-MM-DD) des concerts à rechercher, ou appuyez sur Suivant pour passer';
 
 const DATES_TO = 'Veuillez taper TO DATE (YYYY-MM-DD) des concerts à rechercher, ou appuyez sur Suivant pour ignorer';
 
-const EVENTS_NOT_FOUND = 'Je n\'ai trouvé aucun concert, désolé :(';
+const EVENTS_NOT_FOUND = 'Je n\'ai trouvé aucun concert, désolé :( Appuyez sur /start';
 
 const EVENTS_FOUND = count => `Found ${count} concerts, je vais grouper 5 par message, s'il vous plaît continuez avec tap sur Suivant`;
 
