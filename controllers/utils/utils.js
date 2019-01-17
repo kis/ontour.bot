@@ -33,6 +33,14 @@ ON TOUR UNTIL ${ontourUntil}</b>\n\n`;
     }, eventTpl);
 }
 
+function getCitiesTemplate(citiesList) {
+    let citiesTpl = `<b>CITIES NEAR</b>\n\n`;
+
+    return citiesList.reduce((acc, city) => {
+        return acc + `<b>${city.city.displayName}</b>, ${city.city.country.displayName}\n\n`;
+    }, citiesTpl);
+}
+
 async function getArtists(query) {
     let artists = await fetchArtist(query);
     let artistsParsed = JSON.parse(artists.text);
@@ -65,6 +73,7 @@ async function getEventsByMetroAreaID(metroAreaID, fromDate, toDate, page) {
 
 module.exports = {
     getEventsListTemplate,
+    getCitiesTemplate,
     getArtists,
     getEventsByArtist,
     getMetroAreas,

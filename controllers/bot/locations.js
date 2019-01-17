@@ -8,7 +8,12 @@ const { log } = require('../../config/logger');
 const constantsEvents = require('../../constants/constants-events');
 
 const { 
+    fetchLocationsByCoords 
+} = require('../../api');
+
+const { 
     getEventsListTemplate, 
+    getCitiesTemplate,
     getMetroAreas,
     getEventsByMetroAreaID 
 } = require('../utils/utils');
@@ -99,7 +104,12 @@ bot.onText(/\/mylocation/, async msg => {
     setSearchType(constantsSearch.LOCATIONS_SEARCH);
     setSearchPage(0);
 
-    const cities   = await askMyLocation(msg.chat.id);
+    const location = await askMyLocation(msg.chat.id);
+    const cities = await fetchLocationsByCoords(location);
+    const citiesRes = JSON.parse(cities.text);
+    const citiesArray = citiesRes.resultsPage.results.location;
+
+    bot.sendMessage(msg.chat.id, getCitiesTemplate(citiesArray), constantsReply.REPLY_OPTIONS);
 });
 
 async function askMyLocation(chatId) {
@@ -108,6 +118,7 @@ async function askMyLocation(chatId) {
         bot.once("location", async reply => {
             await log(reply, constantsEvents.EVENT_MY_LOCATION, reply.location);
             bot.sendMessage(reply.chat.id, "Your location is " + [reply.location.longitude, reply.location.latitude].join(";"));
+            resolve(reply.location);
         });
     });
 }

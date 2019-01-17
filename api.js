@@ -13,6 +13,17 @@ async function fetchLocation(location_query) {
         });
 }
 
+async function fetchLocationsByCoords(location) {
+    return request
+        .get(`${constantsApi.SONGSICK_API_DOMAIN}/search/locations.json`)
+        .query({ 
+            apikey: config.SONGKICK_API_KEY,
+            per_page: constantsSearch.EVENTS_PER_PAGE,
+            page: 1,
+            location: `geo:${location.latitude},${location.longitude}`
+        });
+}
+
 async function fetchEventsByMetroAreaID(id, fromDate, toDate, page) {
     return request
         .get(`${constantsApi.SONGSICK_API_DOMAIN}/metro_areas/${id}/calendar.json`)
@@ -55,5 +66,6 @@ module.exports = {
     fetchArtist,
     fetchEventsByArtist,
     fetchLocation,
+    fetchLocationsByCoords,
     fetchEventsByMetroAreaID
 }
