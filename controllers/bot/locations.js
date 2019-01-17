@@ -108,6 +108,7 @@ bot.onText(/\/mylocation/, async msg => {
     const cities = await fetchLocationsByCoords(location);
     const citiesRes = JSON.parse(cities.text);
     const citiesArray = citiesRes.resultsPage.results.location;
+    await log(msg, constantsEvents.EVENT_MY_LOCATION, citiesArray);
 
     bot.sendMessage(msg.chat.id, getCitiesTemplate(citiesArray), constantsReply.REPLY_OPTIONS);
 });
