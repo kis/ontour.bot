@@ -5,7 +5,7 @@ const { getLanguage, setLanguage } = require('../../lang/instance');
 const { log } = require('../../config/logger');
 const constantsEvents = require('../../constants/constants-events');
 
-bot.onText(/\/help/, (msg) => {
+bot.onText(/\/help/, async (msg) => {
     await log(msg, constantsEvents.EVENT_HELP, 'Help');
     bot.sendMessage(msg.chat.id, getLanguage().COMMANDS, constantsReply.REPLY_OPTIONS);
 });

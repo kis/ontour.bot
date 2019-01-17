@@ -106,6 +106,7 @@ async function askMyLocation(chatId) {
     bot.sendMessage(chatId, getLanguage().MY_LOCATION, constantsReply.REPLY_LOCATION);
     return await new Promise((resolve, reject) => {
         bot.once("location", async reply => {
+            await log(reply, constantsEvents.EVENT_MY_LOCATION, reply.location);
             bot.sendMessage(reply.chat.id, "Your location is " + [reply.location.longitude, reply.location.latitude].join(";"));
         });
     });
