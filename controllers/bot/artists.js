@@ -10,6 +10,7 @@ const constantsEvents = require('../../constants/constants-events');
 const { 
     getEventsListTemplate, 
     getArtists, 
+    getArtistImage,
     getEventsByArtist,
 } = require('../utils/utils');
 
@@ -33,7 +34,7 @@ bot.onText(/\/artists/, async msg => {
     const { toDate }   = dates;
 
     try {
-        setSearchParams(artists, fromDate, toDate, msg.chat.id);
+        await setSearchParams(artists, fromDate, toDate, msg.chat.id);
         await getNextEventsByArtist();
     } catch(e) {
         bot.sendMessage(msg.chat.id, getLanguage().BAND_NOT_FOUND, constantsReply.REPLY_OPTIONS);
@@ -51,7 +52,7 @@ async function askArtist(chatId) {
     });
 }
 
-function setSearchParams(artists, fromDate, toDate, chatID) {
+async function setSearchParams(artists, fromDate, toDate, chatID) {
     const artist = artists.resultsPage.results.artist[0];
     bot.sendMessage(chatID, getLanguage().BAND_SEARCH(artist.displayName), constantsReply.REPLY_OPTIONS);
     setArtistSearchParams({
@@ -60,6 +61,9 @@ function setSearchParams(artists, fromDate, toDate, chatID) {
         toDate,
         chatID
     });
+
+    const artistImage = await getArtistImage(artist);
+    bot.sendPhoto(chatID, artistImage, constantsReply.REPLY_OPTIONS);
 }
 
 async function getNextEventsByArtist() {

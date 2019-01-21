@@ -48,6 +48,16 @@ async function fetchArtist(artist_name) {
         });
 }
 
+async function fetchArtistInfo(artist) {
+    return await request
+        .get(`${constantsApi.LFM_DOMAIN}/?method=artist.getinfo`)
+        .query({
+            artist,
+            api_key: config.LFM_KEY,
+            format: 'json',
+        });
+  }
+
 async function fetchEventsByArtist(artist, fromDate, toDate, page) {
     return request
         .get(artist.identifier[0].eventsHref)
@@ -64,6 +74,7 @@ async function fetchEventsByArtist(artist, fromDate, toDate, page) {
 
 module.exports = {
     fetchArtist,
+    fetchArtistInfo,
     fetchEventsByArtist,
     fetchLocation,
     fetchLocationsByCoords,

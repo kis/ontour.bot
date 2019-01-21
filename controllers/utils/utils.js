@@ -2,6 +2,7 @@ const moment = require('moment');
 
 const { 
     fetchArtist, 
+    fetchArtistInfo,
     fetchEventsByArtist, 
     fetchLocation, 
     fetchEventsByMetroAreaID 
@@ -47,6 +48,13 @@ async function getArtists(query) {
     return artistsParsed;
 }
 
+async function getArtistImage(artist) {
+    let artistInfo = await fetchArtistInfo(artist.displayName);
+    let artistInfoParsed = JSON.parse(artistInfo.text);
+    if (!artistInfoParsed || !artistInfoParsed.artist) return;
+    return artistInfoParsed.artist.image[3]['#text'];
+}
+
 async function getEventsByArtist(artist, fromDate, toDate, page) {
     let events = await fetchEventsByArtist(artist, fromDate, toDate, page);
     let eventsParsed = JSON.parse(events.text);
@@ -75,6 +83,7 @@ module.exports = {
     getEventsListTemplate,
     getCitiesTemplate,
     getArtists,
+    getArtistImage,
     getEventsByArtist,
     getMetroAreas,
     getEventsByMetroAreaID
