@@ -1,3 +1,8 @@
+const Promise = require('bluebird');
+Promise.config({
+  cancellation: true
+});
+
 console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV !== 'production') {
