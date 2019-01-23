@@ -27,11 +27,11 @@ async function log(msg, event, params) {
         console.log('log');
 
         const item = {
-            TableName: 'ontour_bot_data',
+            TableName: 'ontour_events',
             Item: {
-                id: {
-                    S: uuid.v1(),
-                },
+                // id: {
+                //     S: uuid.v1(),
+                // },
                 user_id: {
                     S: String(msg.from.id),
                 },

@@ -17,7 +17,9 @@ const DATE_COMMANDS = `Pour rechercher un concert par dates: 💬
 /today - montrer des concerts aujourd'hui
 /next_week - montrer des concerts pour la semaine à venir
 /next_month - montrer des concerts un mois à l'avance
-/enter_dates - entrez la date de début et la date de fin`;
+/enter_dates - entrez la date de début et la date de fin
+
+`;
 
 const SET_LANG = 'Choisissez la langue ;)';
 
