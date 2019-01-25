@@ -45,7 +45,7 @@ async function askArtist(chatId) {
     bot.sendMessage(chatId, getLanguage().BAND, constantsReply.REPLY_OPTIONS);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
-            await log(reply, constantsEvents.EVENT_LOCATION_SEARCH, reply.text);
+            await log(reply, constantsEvents.EVENT_ARTIST_SEARCH, reply.text);
             const artists = await getArtists(reply.text);
             resolve(artists);
         });

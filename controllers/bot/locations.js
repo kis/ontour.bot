@@ -49,7 +49,7 @@ async function askLocation(chatId) {
     bot.sendMessage(chatId, getLanguage().LOCATION, constantsReply.REPLY_OPTIONS);
     return await new Promise((resolve, reject) => {
         bot.once("message", async reply => {
-            await log(reply, constantsEvents.EVENT_ARTIST_SEARCH, reply.text);
+            await log(reply, constantsEvents.EVENT_LOCATION_SEARCH, reply.text);
             const cities = await getMetroAreas(reply.text);
             resolve(cities);
         });

@@ -1,5 +1,6 @@
 const uuid = require('uuid');
 const AWS = require('aws-sdk');
+const constantsEvents = require('../constants/constants-events');
 AWS.config.update({ region: 'us-east-1' });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -19,13 +20,22 @@ async function startAnalysis(userId) {
             }
         };
     
-        dynamodb.query(params, function(err, data) {
-            if (err) {
-                console.log("Error", err);
-            } else {
-                console.log("Success", data);
-            }
-        });
+        const data = await dynamodb.query(params).promise();
+
+        const artists = data.Items
+            .filter(item => item.event === constantsEvents.EVENT_ARTIST_SEARCH)
+            .map(item => item.params);
+        console.log("Searched artists", artists);
+
+        const cities = data.Items
+            .filter(item => item.event === constantsEvents.EVENT_LOCATION_SEARCH)
+            .map(item => item.params);
+        console.log("Searched cities", cities);
+
+        return {
+            artists,
+            cities,
+        };
     } catch(error) {
         console.log("Error", error);
     }
