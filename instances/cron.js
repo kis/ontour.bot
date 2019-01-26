@@ -2,7 +2,7 @@ const bot = require('./bot');
 const CronJob = require('cron').CronJob;
 const constantsReply = require('../constants/constants-reply');
 
-const job = null;
+let job = null;
 
 function createJob(chatId, messageObj) {
     if (job) {

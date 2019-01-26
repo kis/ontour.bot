@@ -24,14 +24,11 @@ async function log(msg, event, params) {
             message_id: msg.message_id
         });
     
-        console.log('log');
+        console.log('log', msg.from.id, msg.chat.id, msg.message_id, msg.from.first_name, msg.from.last_name, msg.from.username);
 
         const item = {
             TableName: 'ontour_events',
             Item: {
-                // id: {
-                //     S: uuid.v1(),
-                // },
                 user_id: {
                     S: String(msg.from.id),
                 },
