@@ -2,7 +2,13 @@ const bot = require('./bot');
 const CronJob = require('cron').CronJob;
 const constantsReply = require('../constants/constants-reply');
 
+const job = null;
+
 function createJob(chatId, messageObj) {
+    if (job) {
+        job.stop();
+    }
+
     console.log('start cron', chatId, messageObj);
 
     const artists = messageObj.artists.join(', ');
@@ -12,9 +18,11 @@ function createJob(chatId, messageObj) {
 Artists: ${artists}
 Cities: ${cities}`;
 
-    return new CronJob('0 * * * *', () => {
+    job = new CronJob('0 * * * *', () => {
         bot.sendMessage(chatId, message, constantsReply.REPLY_OPTIONS);
     }, null, true, 'America/Los_Angeles');
+
+    return job;
 }
 
 module.exports = {
