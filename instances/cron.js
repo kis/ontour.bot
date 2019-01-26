@@ -18,7 +18,7 @@ function createJob(chatId, messageObj) {
 Artists: ${artists}
 Cities: ${cities}`;
 
-    job = new CronJob('0 * * * *', () => {
+    job = new CronJob('*/2 * * * *', () => {
         bot.sendMessage(chatId, message, constantsReply.REPLY_OPTIONS);
     }, null, true, 'America/Los_Angeles');
 
