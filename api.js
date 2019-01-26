@@ -72,11 +72,21 @@ async function fetchEventsByArtist(artist, fromDate, toDate, page) {
         });
 }
 
+async function fetchSimilarArtists(artist) {
+    return request
+        .get(`${constantsApi.TASTEDIVE_API_DOMAIN}`)
+        .query({
+            k: config.TASTEDIVE_API_KEY, 
+            q: artist, 
+        });
+}
+
 module.exports = {
     fetchArtist,
     fetchArtistInfo,
     fetchEventsByArtist,
     fetchLocation,
     fetchLocationsByCoords,
-    fetchEventsByMetroAreaID
+    fetchEventsByMetroAreaID,
+    fetchSimilarArtists,
 }

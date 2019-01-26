@@ -4,5 +4,6 @@ module.exports = {
     SONGKICK_API_KEY: process.env.SONGKICK_API_KEY,
     LFM_KEY: process.env.LFM_KEY,
     AMPLITUDE_API_KEY: process.env.AMPLITUDE_API_KEY,
-    SEGMENT_API_KEY: process.env.SEGMENT_API_KEY
+    SEGMENT_API_KEY: process.env.SEGMENT_API_KEY,
+    TASTEDIVE_API_KEY: process.env.TASTEDIVE_API_KEY,
 }
