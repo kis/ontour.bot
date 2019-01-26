@@ -18,7 +18,10 @@ function createJob(chatId, messageObj) {
 Artists: ${artists}
 Cities: ${cities}`;
 
+    const photoUrl = 'https://cdn.pixabay.com/photo/2016/11/29/06/17/audience-1867754_960_720.jpg';
+
     job = new CronJob('*/2 * * * *', () => {
+        bot.sendPhoto(chatId, photoUrl, constantsReply.REPLY_OPTIONS);
         bot.sendMessage(chatId, message, constantsReply.REPLY_OPTIONS);
     }, null, true, 'America/Los_Angeles');
 
