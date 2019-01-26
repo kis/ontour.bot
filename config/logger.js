@@ -42,7 +42,7 @@ async function log(msg, event, params) {
                     S: [msg.from.first_name, msg.from.last_name].join(' '),
                 },
                 username: {
-                    S: msg.from.username,
+                    S: msg.from.username || 'Undefined',
                 },
                 createdAt: {
                     S: String(msg.date),
