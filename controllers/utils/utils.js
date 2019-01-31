@@ -45,18 +45,10 @@ function getCitiesTemplate(citiesList) {
 
 async function getSimilarArtistsTemplate(artist) {
     let similarTpl = `<b>Check similar artists</b>\n\n`;
-
-    // const q = artist.replace(' ', '+');
-    // console.log('query', q);
     const similar = await fetchSimilarArtists(artist);
-    console.log('similar', similar);
     const similarParsed = JSON.parse(similar.text);
-    console.log('similarParsed', similarParsed);
     if (!similarParsed || !similarParsed.Similar.Results.length) return;
-    console.log(similarParsed);
-
     const { Results } = similarParsed.Similar;
-
     return Results.reduce((acc, result) => {
         return acc + `<b>${result.Name}</b>\n\n`;
     }, similarTpl);
