@@ -80,7 +80,7 @@ async function getNextEventsByArtist() {
     if (!eventsCount) {
         message = getLanguage().EVENTS_NOT_FOUND;
         bot.sendMessage(chatID, message, constantsReply.REPLY_OPTIONS);
-        bot.sendMessage(chatID, similarTpl, constantsReply.REPLY_OPTIONS);
+        if (similarTpl) bot.sendMessage(chatID, similarTpl, constantsReply.REPLY_OPTIONS);
     } else {
         message = getLanguage().EVENTS_FOUND(eventsCount);
         bot.sendMessage(chatID, message, constantsReply.REPLY_OPTIONS);
