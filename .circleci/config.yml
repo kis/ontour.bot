@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:9.8.0-browsers
+
+    steps:
+      - run:
+          name: "Show npm and node versions"
+          command: |
+            node --version
+            npm --version
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: 
+          command: |
+            npm install && \
+            sudo npm install -g firebase-tools && \
+            sudo npm install typescript -g
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+        
+      - run: 
+          command: |
+            npm run test && \
+            tsc && \
+            npm run prettier-check
+
+      - deploy: 
+          command: |
+            npm run build && \
+            firebase deploy --token "$FIREBASE_DEPLOY_TOKEN"
+
+

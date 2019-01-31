@@ -5,7 +5,8 @@ const {
     fetchArtistInfo,
     fetchEventsByArtist, 
     fetchLocation, 
-    fetchEventsByMetroAreaID 
+    fetchEventsByMetroAreaID,
+    fetchSimilarArtists, 
 } = require('../../api');
 
 const constantsSearch = require('../../constants/constants-search');
@@ -40,6 +41,22 @@ function getCitiesTemplate(citiesList) {
     return citiesList.reduce((acc, city) => {
         return acc + `<b>${city.city.displayName}</b>, ${city.city.country.displayName}\n\n`;
     }, citiesTpl);
+}
+
+function getSimilarArtistsTemplate(artist) {
+    let similarTpl = `<b>Check similar artists</b>\n\n`;
+
+    const q = artist.replace(' ', '+');
+    const similar = await fetchSimilarArtists(q);
+    const similarParsed = JSON.parse(similar.text);
+    if (!similarParsed || !similarParsed.Similar.Results.length) return;
+    console.log(similarParsed);
+
+    const { Results } = similarParsed.Similar;
+
+    return Results.reduce((acc, result) => {
+        return acc + `<b>${result.Name}</b>\n\n`;
+    }, similarTpl);
 }
 
 async function getArtists(query) {
@@ -83,6 +100,7 @@ module.exports = {
     getEventsListTemplate,
     getCitiesTemplate,
     getArtists,
+    getSimilarArtistsTemplate,
     getArtistImage,
     getEventsByArtist,
     getMetroAreas,
