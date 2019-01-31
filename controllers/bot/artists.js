@@ -81,7 +81,7 @@ async function getNextEventsByArtist() {
 
     let eventTpl = getEventsListTemplate(eventsList, artist, constantsSearch.ARTISTS_SEARCH);
     if (getSearchPage() * constantsSearch.EVENTS_PER_PAGE > eventsCount) {
-        const similarTpl = getSimilarArtistsTemplate(artist.displayName);
+        const similarTpl = await getSimilarArtistsTemplate(artist.displayName);
         setArtistSearchParams(null);
         eventTpl += similarTpl;
         eventTpl += getLanguage().FINISHED;
