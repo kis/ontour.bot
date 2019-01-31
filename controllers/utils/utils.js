@@ -43,7 +43,7 @@ function getCitiesTemplate(citiesList) {
     }, citiesTpl);
 }
 
-function getSimilarArtistsTemplate(artist) {
+async function getSimilarArtistsTemplate(artist) {
     let similarTpl = `<b>Check similar artists</b>\n\n`;
 
     const q = artist.replace(' ', '+');
