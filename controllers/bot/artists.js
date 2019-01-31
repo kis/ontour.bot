@@ -74,19 +74,29 @@ async function getNextEventsByArtist() {
     setSearchPage(searchPage);
 
     const { eventsList, eventsCount } = await getEventsByArtist(artist, fromDate, toDate, searchPage);
-    const message = !eventsCount ? getLanguage().EVENTS_NOT_FOUND : getLanguage().EVENTS_FOUND(eventsCount);
-    bot.sendMessage(chatID, message, constantsReply.REPLY_OPTIONS);
+    const similarTpl = await getSimilarArtistsTemplate(artist.displayName);
+    let message;
+
+    if (!eventsCount) {
+        message = getLanguage().EVENTS_NOT_FOUND;
+        bot.sendMessage(chatID, message, constantsReply.REPLY_OPTIONS);
+        bot.sendMessage(chatID, similarTpl, constantsReply.REPLY_OPTIONS);
+    } else {
+        message = getLanguage().EVENTS_FOUND(eventsCount);
+        bot.sendMessage(chatID, message, constantsReply.REPLY_OPTIONS);
+    }
 
     if (!eventsList.event || !eventsList.event.length) return;
 
     let eventTpl = getEventsListTemplate(eventsList, artist, constantsSearch.ARTISTS_SEARCH);
     if (getSearchPage() * constantsSearch.EVENTS_PER_PAGE > eventsCount) {
-        const similarTpl = await getSimilarArtistsTemplate(artist.displayName);
         setArtistSearchParams(null);
-        eventTpl += similarTpl;
         eventTpl += getLanguage().FINISHED;
+        sendMessageWithNext(chatID, eventTpl);
+        sendMessageWithNext(chatID, similarTpl);
+    } else {
+        sendMessageWithNext(chatID, eventTpl);
     }
-    sendMessageWithNext(chatID, eventTpl);
 }
 
 bot.on('message', async msg => {
