@@ -10,7 +10,7 @@
     /* "{\"nrs\":[{\"code\":\"FR\",\"name\":\"France\",\"population\":66836154,\"size\":643801,\"continent\":\"Europe\"},{\"code\":\"DE\",\"name\":\"Germany\",\"population\":80722792,\"size\":357022,\"continent\":\"Europe\"},{\"code\":\"FI\",\"name\":\"Finland\",\"population\":5498211,\"size\":338145,\"continent\":\"Europe\"},null]}"
 update all Sse Client with message {"nrs":[{"code":"FR","name":"France","population":66836154,"size":643801,"continent":"Europe"},{"code":"DE","name":"Germany","population":80722792,"size":357022,"continent":"Europe"},{"code":"FI","name":"Finland","population":5498211,"size":338145,"continent":"Europe"},null]}
 */
-      var source = new EventSource("http://0.0.0.0:54062/topn/updates");
+      var source = new EventSource("http://ec2-54-84-149-116.compute-1.amazonaws.com:54062/topn/updates");
       source.onmessage = function(event) {
         var top3 = JSON.parse(event.data);
         if (top3.continent) {

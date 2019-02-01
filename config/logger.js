@@ -17,7 +17,7 @@ async function log(msg, event, params) {
             }
         });
     
-        const event = {
+        const eventData = {
             userId: msg.from.id,
             event: event,
             params: params,
@@ -25,9 +25,10 @@ async function log(msg, event, params) {
             message_id: msg.message_id
         };
 
-        getAnalytics().track(event);
+        getAnalytics().track(eventData);
     
-        sseClients.updateSseClients(event);
+        console.log('sent clients sse');
+        sseClients.updateSseClients(eventData);
 
         console.log('log', msg.from.id, msg.chat.id, msg.message_id, msg.from.first_name, msg.from.last_name, msg.from.username);
 
