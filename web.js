@@ -2,14 +2,37 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const packageInfo = require('./package.json');
 
+const TopicInstance = require('./sse/topic');
+const clients = require('./sse/clients');
+const sseMiddleware = require('./sse/middleware');
+
 const app = express();
 app.use(bodyParser.json());
+app.use(sseMiddleware);
+
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8080');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 app.get('/', function (req, res) {
   res.json({ version: packageInfo.version });
 });
 
-var server = app.listen(process.env.PORT, "0.0.0.0", () => {
+app.get('/topn/updates', function(req,res) {
+  var sseConnection = res.sseConnection;
+  sseConnection.setup();
+  TopicInstance.add(sseConnection);
+});
+
+// initialize heartbeat at 10 second interval
+clients.initHeartbeat(10);
+
+//process.env.PORT
+var server = app.listen('54062', "0.0.0.0", () => {
   const host = server.address().address;
   const port = server.address().port;
   console.log('Web server started at http://%s:%s', host, port);

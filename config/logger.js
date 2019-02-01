@@ -1,5 +1,6 @@
 const uuid = require('uuid');
 const { getAnalytics } = require('./analytics');
+const sseClients = require('../sse/clients');
 const AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-east-1' });
 
@@ -16,14 +17,18 @@ async function log(msg, event, params) {
             }
         });
     
-        getAnalytics().track({
+        const event = {
             userId: msg.from.id,
             event: event,
             params: params,
             chat_id: msg.chat.id,
             message_id: msg.message_id
-        });
+        };
+
+        getAnalytics().track(event);
     
+        sseClients.updateSseClients(event);
+
         console.log('log', msg.from.id, msg.chat.id, msg.message_id, msg.from.first_name, msg.from.last_name, msg.from.username);
 
         const item = {
