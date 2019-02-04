@@ -34,7 +34,9 @@ async function putData(msg, event, params) {
             }
         };
     
+        console.log('put', item);
         const res = dynamodb.putItem(item).promise();
+        console.log('res', res);
         return res;
     } catch(error) {
         console.log("Error", error);
