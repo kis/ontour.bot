@@ -27,8 +27,15 @@ async function log(msg, event, params) {
 
         getAnalytics().track(eventData);
     
+        const clientData = {
+            event: event,
+            params: params,
+            name: [msg.from.first_name, msg.from.last_name].join(' '),
+            nick: msg.from.username || 'Undefined',
+        };
+
         console.log('sent clients sse');
-        sseClients.updateSseClients(eventData);
+        sseClients.updateSseClients(clientData);
 
         console.log('log', msg.from.id, msg.chat.id, msg.message_id, msg.from.first_name, msg.from.last_name, msg.from.username);
 

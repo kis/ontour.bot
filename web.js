@@ -33,9 +33,6 @@ app.get('/topn/updates', function(req,res) {
   TopicInstance.add(sseConnection);
 });
 
-// initialize heartbeat at 10 second interval
-clients.initHeartbeat(10);
-
 //process.env.PORT
 var server = app.listen('54062', "0.0.0.0", () => {
   const host = server.address().address;
