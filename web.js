@@ -28,13 +28,13 @@ app.get('/index', function (req, res) {
 });
 
 app.get('/topn/updates', function(req,res) {
-  var sseConnection = res.sseConnection;
+  let sseConnection = res.sseConnection;
   sseConnection.setup();
   TopicInstance.add(sseConnection);
 });
 
 //process.env.PORT
-var server = app.listen('54062', "0.0.0.0", () => {
+const server = app.listen('54062', "0.0.0.0", () => {
   const host = server.address().address;
   const port = server.address().port;
   console.log('Web server started at http://%s:%s', host, port);

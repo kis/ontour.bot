@@ -1,7 +1,7 @@
 /**
  * A Connection is a simple SSE manager for 1 client.
  */
-var Connection = (function () {
+const Connection = (function () {
     function Connection(res) {
         console.log(" sseMiddleware construct connection for response ");
         this.res = res;
