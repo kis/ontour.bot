@@ -8,6 +8,7 @@ const sseMiddleware = require('./sse/middleware');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static(__dirname));
 app.use(sseMiddleware);
 
 app.use(function (req, res, next) {
@@ -20,6 +21,10 @@ app.use(function (req, res, next) {
 
 app.get('/', function (req, res) {
   res.json({ version: packageInfo.version });
+});
+
+app.get('/index', function (req, res) {
+  res.sendfile(__dirname + '/index.html');
 });
 
 app.get('/topn/updates', function(req,res) {
