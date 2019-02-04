@@ -33,7 +33,7 @@ async function log(msg, event, params) {
 
         sseClients.updateSseClients(clientData);
 
-        putData(msg, event, params);
+        await putData(msg, event, params);
     } catch(error) {
         console.log("Error", error);
     }
