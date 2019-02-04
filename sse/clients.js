@@ -1,5 +1,5 @@
 const TopicInstance = require('./topic');
-const m;
+let m;
 
 const updateSseClients = function(message) {
   const msg = message;
