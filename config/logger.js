@@ -1,7 +1,7 @@
 const uuid = require('uuid');
 const { getAnalytics } = require('./analytics');
 const sseClients = require('../sse/clients');
-const { putData } = require('dynamo-db');
+const { putData } = require('./dynamo-db');
 
 async function log(msg, event, params) {
     try {
@@ -32,7 +32,7 @@ async function log(msg, event, params) {
         };
 
         sseClients.updateSseClients(clientData);
-        
+
         putData(msg, event, params);
     } catch(error) {
         console.log("Error", error);
