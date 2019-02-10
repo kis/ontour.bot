@@ -1,21 +1,43 @@
-#result {
+body {
+    background: #edf7f7;
+}
+
+#space {
     width: 100%;
 }
 
-#eventsTbl {
+#chart {
+    min-width: 310px; 
+    height: 400px; 
+    margin: 0 auto;
+}
+
+#events {
     width: 600px;
     margin: 0 auto;
 }
 
-#eventsTbl tbody {
-    border: 1px solid #d0e4ff;
+#headline, .line {
+    margin: 5px 0;
+    font-size: 0;
     background: #d0e4ff;
 }
 
-#eventsTbl tr td {
-    border-right: 1px solid #d0e4ff;
+#headline {
+    background: #afd1ff;
+}
+
+#headline div, .line div {
     text-align: center;
+    font-size: 16px;
     font-family: 'Signika', sans-serif;
     color: #003f84;
-    padding: 7px 12px;
+    padding: 20px 12px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 125px;
+}
+
+#headline div {
+    color: black;
 }
