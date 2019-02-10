@@ -1,5 +1,5 @@
 body {
-    background: #edf7f7;
+    background: black;
     opacity: 1;
     transition: 0.7s opacity;
 }
@@ -7,6 +7,14 @@ body {
 .fade {
     opacity: 0;
     transition: none;
+}
+
+#map {
+    position: absolute;
+    top: 412px;
+    left: calc(50vw);
+    height: calc(100vh - 421px);
+    width: 49vw;
 }
 
 #space {
@@ -20,8 +28,11 @@ body {
 }
 
 #events {
-    width: 600px;
-    margin: 0 auto;
+    position: relative;
+    width: 49vw;
+    float: left;
+    height: calc(100vh - 421px);
+    overflow: auto;
 }
 
 @keyframes fadeIn {
@@ -36,12 +47,13 @@ body {
 #headline, .line {
     margin: 5px 0;
     font-size: 0;
-    background: #d0e4ff;
+    background: #192634;
     animation: fadeIn .55s forwards;
 }
 
 #headline {
-    background: #afd1ff;
+    background: black;
+    border: 1px solid #192634;
 }
 
 #headline div, .line div {
@@ -56,5 +68,5 @@ body {
 }
 
 #headline div {
-    color: black;
+    color: white;
 }

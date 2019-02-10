@@ -2,6 +2,31 @@
     const sourceURL = "http://ec2-54-84-149-116.compute-1.amazonaws.com:54062/topn/updates";
     const source = new EventSource(sourceURL);
 
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2lyaWxsc3R5b3BraW4iLCJhIjoiZjA3MTRlZDQzYzYyZmQ1ZGMyZDZkNjlhMjliMjQ2YjUifQ.BmlYKQnKTUcpLi2vk2AxYA';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/traffic-night-v2',
+        zoom: 0
+    });
+
+    const url = 'https://wanderdrone.appspot.com/';
+
+    setTimeout(() => {
+        map.addSource('drone', { type: 'geojson', data: url });
+        map.addLayer({
+            "id": "drone",
+            "type": "symbol",
+            "source": "drone",
+            "layout": {
+                "icon-image": "rocket-15"
+            }
+        });
+    }, 1000);
+
+    function updateMap() {
+        map.getSource('drone').setData(url);
+    }
+
     function addDataToDOM(data) {
         const events = document.getElementById("events");
         const line1 = document.getElementsByClassName("line")[0];
@@ -26,12 +51,14 @@
         chart: {
             type: 'spline',
             animation: Highcharts.svg,
+            backgroundColor: 'black',
             events: {
                 load: function () {
                     let series = this.series[0];
                     source.onmessage = (event) => {
                         const data = JSON.parse(event.data);
                         addDataToDOM(data);
+                        updateMap();
                         const x = (new Date()).getTime(),
                             y = Math.random();
                         series.addPoint([x, y], true, true);
