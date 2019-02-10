@@ -1,5 +1,12 @@
 body {
     background: #edf7f7;
+    opacity: 1;
+    transition: 0.7s opacity;
+}
+
+.fade {
+    opacity: 0;
+    transition: none;
 }
 
 #space {
@@ -17,10 +24,20 @@ body {
     margin: 0 auto;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 #headline, .line {
     margin: 5px 0;
     font-size: 0;
     background: #d0e4ff;
+    animation: fadeIn .55s forwards;
 }
 
 #headline {

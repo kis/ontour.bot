@@ -6,7 +6,7 @@
         const events = document.getElementById("events");
         const line1 = document.getElementsByClassName("line")[0];
         var line = document.createElement("div");
-        line.className = "line";
+        line.className = 'line';
         events.insertBefore(line, line1);
         const div1 = document.createElement("div");
         const div2 = document.createElement("div");

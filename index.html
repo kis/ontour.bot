@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="./client/styles.css">
   </head>
   <body>
+    <script>
+      document.body.className = 'fade';
+    </script>
     <div id="space">
       <div id="chart"></div>
       <div id="events">
@@ -24,5 +27,10 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="./client/client.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function(e) {
+        document.body.className = '';
+      });
+    </script>
   </body>
 </html>
