@@ -1,4 +1,4 @@
-![alt text](https://raw.githubusercontent.com/kis/ontour.bot/master/architecture.png)
+![alt text](https://raw.githubusercontent.com/kis/ontour.bot/master/architecture.png?token=AEo2rMq-uJspKKhH971BPVp6JlY3W1Vpks5cccq2wA%3D%3D)
 
 debug heroku deploy logs   
 heroku login  
