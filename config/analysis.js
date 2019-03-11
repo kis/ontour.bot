@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+const _ = require('lodash');
 const AWS = require('aws-sdk');
 const constantsEvents = require('../constants/constants-events');
 AWS.config.update({ region: 'us-east-1' });
@@ -22,14 +23,20 @@ async function startAnalysis(userId) {
     
         const data = await dynamodb.query(params).promise();
 
-        const artists = data.Items
+        const artists = _.chain(data.Items)
+            .sortBy(item => item.params)
             .filter(item => item.event === constantsEvents.EVENT_ARTIST_SEARCH)
-            .map(item => item.params);
+            .map(item => _.capitalize(item.params))
+            .uniqWith((a, b) => { return _.lowerCase(a) == _.lowerCase(b) })
+            .value();
         console.log("Searched artists", artists);
 
-        const cities = data.Items
+        const cities = _.chain(data.Items)
+            .sortBy(item => item.params)
             .filter(item => item.event === constantsEvents.EVENT_LOCATION_SEARCH)
-            .map(item => item.params);
+            .map(item => _.capitalize(item.params))
+            .uniqWith((a, b) => { return _.lowerCase(a) == _.lowerCase(b) })
+            .value();
         console.log("Searched cities", cities);
 
         return {

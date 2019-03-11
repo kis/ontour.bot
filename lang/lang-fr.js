@@ -1,11 +1,11 @@
-const WELCOME = name => `Bonjour, ${name}! 😄😉 
+const WELCOME = name => `<b>Bonjour, ${name}!</b> 😄😉 \n\n
 🎸 Pour rechercher des concerts par des groupes de musique entrez le /artists.
 🌎 Pour rechercher des événements par ville entrez le /locations.
 📌 Pour rechercher des événements par emplacement entrez le /mylocation.
 🆘 Pour vérifier la liste des commandes disponibles entrez le /help.
 🎓 Pour définir la langue du bot entrez le /setlang.`;
 
-const COMMANDS = `Commandes: 💬
+const COMMANDS = `<b>Commandes:</b> 💬
 /start - démarrer le bot
 /artists - recherche de concerts par groupes de musique
 /locations - recherche d'événements par villes
@@ -13,7 +13,7 @@ const COMMANDS = `Commandes: 💬
 /setlang - définit la langue du bot
 /help - obtenir de l'aide`;
 
-const DATE_COMMANDS = `Pour rechercher un concert par dates: 💬
+const DATE_COMMANDS = `<b>Pour rechercher un concert par dates:</b> 💬
 /today - montrer des concerts aujourd'hui
 /next_week - montrer des concerts pour la semaine à venir
 /next_month - montrer des concerts un mois à l'avance
