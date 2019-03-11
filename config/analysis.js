@@ -4,7 +4,8 @@ const AWS = require('aws-sdk');
 const constantsEvents = require('../constants/constants-events');
 AWS.config.update({ region: 'us-east-1' });
 
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const dynamodb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
+const docClient = new AWS.DynamoDB.DocumentClient();
 
 async function startAnalysis(userId) {
     try {
@@ -20,8 +21,8 @@ async function startAnalysis(userId) {
                 ":user_id": String(userId)
             }
         };
-    
-        const data = await dynamodb.query(params).promise();
+
+        const data = await docClient.query(params).promise();
 
         const artists = _.chain(data.Items)
             .sortBy(item => item.params)
@@ -38,6 +39,39 @@ async function startAnalysis(userId) {
             .uniqWith((a, b) => { return _.lowerCase(a) == _.lowerCase(b) })
             .value();
         console.log("Searched cities", cities);
+
+        const artistsStr = _.join(artists, ', ');
+        const citiesStr = _.join(cities, ', ');
+
+        const artistsItem = {
+            TableName: 'top_artists',
+            Item: {
+                user_id: {
+                    S: String(userId),
+                },
+                top_artists: {
+                    S: String(artistsStr),
+                },
+            }
+        };
+    
+        console.log('put artists', artistsItem);
+        await dynamodb.putItem(artistsItem).promise();
+
+        const citiesItem = {
+            TableName: 'top_cities',
+            Item: {
+                user_id: {
+                    S: String(userId),
+                },
+                top_cities: {
+                    S: String(citiesStr),
+                },
+            }
+        };
+    
+        console.log('put cities', citiesItem);
+        await dynamodb.putItem(citiesItem).promise();
 
         return {
             artists,
