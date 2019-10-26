@@ -56,7 +56,7 @@ async function startAnalysis(userId) {
         };
     
         console.log('put artists', artistsItem);
-        await dynamodb.putItem(artistsItem).promise();
+        artistsStr && await dynamodb.putItem(artistsItem).promise();
 
         const citiesItem = {
             TableName: 'top_cities',
@@ -71,7 +71,7 @@ async function startAnalysis(userId) {
         };
     
         console.log('put cities', citiesItem);
-        await dynamodb.putItem(citiesItem).promise();
+        citiesStr && await dynamodb.putItem(citiesItem).promise();
 
         return {
             artists,

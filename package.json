@@ -8,6 +8,7 @@
     "demon": "nodemon index",
     "dev": "pm2 start",
     "log": "pm2 monit",
+    "logs": "pm2 logs ontour-bot",
     "list": "pm2 list",
     "stop": "pm2 delete ontour-bot",
     "test": "echo \"Error: no test specified\" && exit 1"
