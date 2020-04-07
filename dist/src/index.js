@@ -17,7 +17,6 @@ Promise.config({
 if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config();
 }
-console.log(process.env);
 const bot = __importStar(require("./bot"));
 const web_1 = __importDefault(require("./web"));
 const Raven = require('raven');
