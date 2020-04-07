@@ -9,5 +9,6 @@ function getAnalytics() {
 }
 
 export {
-    getAnalytics
+    getAnalytics,
+    Analytics
 }

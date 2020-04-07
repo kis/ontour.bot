@@ -18,8 +18,8 @@ async function log(msg, event, params) {
         });
         const eventData = {
             userId: msg.from.id,
-            event: event,
-            params: params,
+            event,
+            params,
             chat_id: msg.chat.id,
             message_id: msg.message_id
         };

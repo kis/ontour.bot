@@ -3,7 +3,7 @@ import updateSseClients from '../sse/clients'
 import { putData } from './dynamo-db'
 import { IMessage, IEventData } from '../constants/typings'
 
-async function log(msg: IMessage, event: number | string, params: any) {
+async function log(msg: IMessage, event: string, params: any) {
     try {
         getAnalytics().identify({
             userId: msg.from.id,
@@ -16,8 +16,8 @@ async function log(msg: IMessage, event: number | string, params: any) {
     
         const eventData: IEventData = {
             userId: msg.from.id,
-            event: event,
-            params: params,
+            event,
+            params,
             chat_id: msg.chat.id,
             message_id: msg.message_id
         };
