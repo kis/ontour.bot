@@ -5,8 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api"));
 const { TELEGRAM_TOKEN, HEROKU_URL } = require('../config/config');
+console.log(TELEGRAM_TOKEN, HEROKU_URL);
 let bot;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
     bot = new node_telegram_bot_api_1.default(TELEGRAM_TOKEN);
     bot.setWebHook(HEROKU_URL + bot.token);
 }
