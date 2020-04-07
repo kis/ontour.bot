@@ -1,68 +1,70 @@
 body {
-    background: black;
-    opacity: 1;
-    transition: 0.7s opacity;
+  background: black;
+  opacity: 1;
+  transition: 0.7s opacity;
 }
 
 .fade {
-    opacity: 0;
-    transition: none;
+  opacity: 0;
+  transition: none;
 }
 
 #map {
-    position: absolute;
-    top: 412px;
-    left: calc(50vw);
-    height: calc(100vh - 421px);
-    width: 49vw;
+  position: absolute;
+  top: 412px;
+  left: calc(50vw);
+  height: calc(100vh - 421px);
+  width: 49vw;
 }
 
 #space {
-    width: 100%;
+  width: 100%;
 }
 
 #chart {
-    min-width: 310px; 
-    height: 400px; 
-    margin: 0 auto;
+  min-width: 310px;
+  height: 400px;
+  margin: 0 auto;
 }
 
 #events {
-    position: relative;
-    width: 49vw;
-    float: left;
-    height: calc(100vh - 421px);
-    overflow: auto;
+  position: relative;
+  width: 49vw;
+  float: left;
+  height: calc(100vh - 421px);
+  overflow: auto;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-#headline, .line {
-    margin: 5px 0;
-    font-size: 0;
-    background: #192634;
-    animation: fadeIn .55s forwards;
+#headline,
+.line {
+  margin: 5px 0;
+  font-size: 0;
+  background: #192634;
+  animation: fadeIn 0.55s forwards;
 }
 
 #headline {
-    background: black;
-    border: 1px solid #192634;
+  background: black;
+  border: 1px solid #192634;
 }
 
-#headline div, .line div {
-    text-align: center;
-    font-size: 16px;
-    font-family: 'Signika', sans-serif;
-    color: white;
-    padding: 20px 12px;
-    vertical-align: middle;
-    display: inline-block;
-    width: 125px;
+#headline div,
+.line div {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Signika', sans-serif;
+  color: white;
+  padding: 20px 12px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 125px;
 }

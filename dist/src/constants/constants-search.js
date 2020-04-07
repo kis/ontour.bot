@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 const ITEMS_PER_PAGE = 1;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 const EVENTS_PER_PAGE = 5;

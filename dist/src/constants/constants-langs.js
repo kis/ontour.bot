@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 const LANG_EN = 'English';
 exports.LANG_EN = LANG_EN;
 const LANG_RU = 'Russian';

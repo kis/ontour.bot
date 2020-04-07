@@ -1,39 +1,39 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 let searchType = null;
 let searchPage = 0;
 let artistSearchParams = null;
 let locationSearchParams = null;
 function setSearchType(type) {
-    searchType = type;
+  searchType = type;
 }
 exports.setSearchType = setSearchType;
 function getSearchType() {
-    return searchType;
+  return searchType;
 }
 exports.getSearchType = getSearchType;
 function setSearchPage(page) {
-    searchPage = page;
+  searchPage = page;
 }
 exports.setSearchPage = setSearchPage;
 function getSearchPage() {
-    return searchPage;
+  return searchPage;
 }
 exports.getSearchPage = getSearchPage;
 function setArtistSearchParams(params) {
-    artistSearchParams = params;
+  artistSearchParams = params;
 }
 exports.setArtistSearchParams = setArtistSearchParams;
 function getArtistSearchParams() {
-    return artistSearchParams;
+  return artistSearchParams;
 }
 exports.getArtistSearchParams = getArtistSearchParams;
 function setLocationSearchParams(params) {
-    locationSearchParams = params;
+  locationSearchParams = params;
 }
 exports.setLocationSearchParams = setLocationSearchParams;
 function getLocationSearchParams() {
-    return locationSearchParams;
+  return locationSearchParams;
 }
 exports.getLocationSearchParams = getLocationSearchParams;
 //# sourceMappingURL=params.js.map

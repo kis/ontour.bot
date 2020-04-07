@@ -4,44 +4,44 @@ let artistSearchParams: any = null;
 let locationSearchParams: any = null;
 
 function setSearchType(type: string) {
-    searchType = type;
+  searchType = type;
 }
 
 function getSearchType() {
-    return searchType;
+  return searchType;
 }
 
 function setSearchPage(page: number) {
-    searchPage = page;
+  searchPage = page;
 }
 
 function getSearchPage() {
-    return searchPage;
+  return searchPage;
 }
 
 function setArtistSearchParams(params: any) {
-    artistSearchParams = params;
+  artistSearchParams = params;
 }
 
 function getArtistSearchParams() {
-    return artistSearchParams;
+  return artistSearchParams;
 }
 
 function setLocationSearchParams(params: any) {
-    locationSearchParams = params;
+  locationSearchParams = params;
 }
 
 function getLocationSearchParams() {
-    return locationSearchParams;
+  return locationSearchParams;
 }
 
 export {
-    setSearchType,
-    getSearchType,
-    setSearchPage,
-    getSearchPage,
-    setArtistSearchParams,
-    getArtistSearchParams,
-    setLocationSearchParams,
-    getLocationSearchParams,
-}
+  setSearchType,
+  getSearchType,
+  setSearchPage,
+  getSearchPage,
+  setArtistSearchParams,
+  getArtistSearchParams,
+  setLocationSearchParams,
+  getLocationSearchParams,
+};

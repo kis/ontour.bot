@@ -23,55 +23,61 @@ Or press Next to see all concerts`;
 
 const SET_LANG = 'Choose the language ;)';
 
-const LANG_IS = (lang: string) => `Bot language setted to ${lang}. Press /start`;
+const LANG_IS = (lang: string) =>
+  `Bot language setted to ${lang}. Press /start`;
 
-const BAND = "Cool, now type the name of the band";
+const BAND = 'Cool, now type the name of the band';
 
 const BAND_SEARCH = (band: string) => `Let's search for ${band}'s tour...`;
 
-const BAND_NOT_FOUND = 'Sorry, I haven\'t found such artist :( Press /start to new search';
+const BAND_NOT_FOUND =
+  "Sorry, I haven't found such artist :( Press /start to new search";
 
-const LOCATION = "Cool, now type the city";
+const LOCATION = 'Cool, now type the city';
 
-const MY_LOCATION = "Cool, where are you, which city?";
+const MY_LOCATION = 'Cool, where are you, which city?';
 
-const LOCATION_SEARCH = (location: string) => `Let's search for events in ${location}...`;
+const LOCATION_SEARCH = (location: string) =>
+  `Let's search for events in ${location}...`;
 
-const LOCATION_NOT_FOUND = 'Sorry, I haven\'t found such city :( Press /start to new search';
+const LOCATION_NOT_FOUND =
+  "Sorry, I haven't found such city :( Press /start to new search";
 
-const DATES_FROM = 'Please type FROM DATE (YYYY-MM-DD) of the concerts to search, or press Next to skip';
+const DATES_FROM =
+  'Please type FROM DATE (YYYY-MM-DD) of the concerts to search, or press Next to skip';
 
-const DATES_TO = 'Please type TO DATE (YYYY-MM-DD) of the concerts to search, or press Next to skip';
+const DATES_TO =
+  'Please type TO DATE (YYYY-MM-DD) of the concerts to search, or press Next to skip';
 
-const EVENTS_NOT_FOUND = 'I haven\'t found any concerts, sorry :( Press /start to new search';
+const EVENTS_NOT_FOUND =
+  "I haven't found any concerts, sorry :( Press /start to new search";
 
-const EVENTS_FOUND = (count: number) => `Found ${count} concerts, I will group it 5 per message, please continue with tap on Next`;
+const EVENTS_FOUND = (count: number) =>
+  `Found ${count} concerts, I will group it 5 per message, please continue with tap on Next`;
 
 const FINISHED = 'Finished! To start new search tap /start';
 
 const NEXT = 'Next';
 
 const langEn = {
-    SET_LANG,
-    LANG_IS,
-    WELCOME,
-    COMMANDS,
-    DATE_COMMANDS,
-    BAND,
-    BAND_SEARCH,
-    BAND_NOT_FOUND,
-    LOCATION,
-    MY_LOCATION,
-    LOCATION_SEARCH,
-    LOCATION_NOT_FOUND,
-    DATES_FROM,
-    DATES_TO,
-    EVENTS_NOT_FOUND,
-    EVENTS_FOUND,
-    FINISHED,
-    NEXT
-}
+  SET_LANG,
+  LANG_IS,
+  WELCOME,
+  COMMANDS,
+  DATE_COMMANDS,
+  BAND,
+  BAND_SEARCH,
+  BAND_NOT_FOUND,
+  LOCATION,
+  MY_LOCATION,
+  LOCATION_SEARCH,
+  LOCATION_NOT_FOUND,
+  DATES_FROM,
+  DATES_TO,
+  EVENTS_NOT_FOUND,
+  EVENTS_FOUND,
+  FINISHED,
+  NEXT,
+};
 
-export {
-    langEn
-}
+export { langEn };

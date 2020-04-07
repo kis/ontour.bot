@@ -3,44 +3,44 @@
  */
 
 interface conn {
-    res: {
-        on: (event: string, callback: () => void) => void
-    };
+  res: {
+    on: (event: string, callback: () => void) => void;
+  };
 }
 
 class Topic {
-    public connections: Array<any>;
-    private static instance: Topic;
+  public connections: Array<any>;
+  private static instance: Topic;
 
-    private constructor() {
-        console.log(" constructor for Topic");
-        this.connections = [];
+  private constructor() {
+    console.log(' constructor for Topic');
+    this.connections = [];
+  }
+
+  static getInstance() {
+    if (!Topic.instance) {
+      Topic.instance = new Topic();
     }
 
-    static getInstance() {
-        if (!Topic.instance) {
-            Topic.instance = new Topic()
-        } 
+    return Topic.instance;
+  }
 
-        return Topic.instance
-    }
+  public add(conn: conn) {
+    const connections = this.connections;
+    connections.push(conn);
+    console.log('New client connected, now: ', connections.length);
+    conn.res.on('close', () => {
+      let i = connections.indexOf(conn);
+      if (i >= 0) {
+        connections.splice(i, 1);
+      }
+      console.log('Client disconnected, now: ', connections.length);
+    });
+  }
 
-    public add(conn: conn) {
-        const connections = this.connections;
-        connections.push(conn);
-        console.log('New client connected, now: ', connections.length);
-        conn.res.on('close', () => {
-            let i = connections.indexOf(conn);
-            if (i >= 0) {
-                connections.splice(i, 1);
-            }
-            console.log('Client disconnected, now: ', connections.length);
-        });
-    }
-
-    public forEach(cb: () => void) {
-        this.connections.forEach(cb);
-    }
+  public forEach(cb: () => void) {
+    this.connections.forEach(cb);
+  }
 }
 
 const TopicInstance = Topic.getInstance();

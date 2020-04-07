@@ -1,5 +1,9 @@
 import express from 'express';
 export interface MiddlewareResponse extends express.Response {
-    sseConnection?: any;
+  sseConnection?: any;
 }
-export default function sseMiddleware(req: express.Request, res: MiddlewareResponse, next: express.NextFunction): void;
+export default function sseMiddleware(
+  req: express.Request,
+  res: MiddlewareResponse,
+  next: express.NextFunction
+): void;

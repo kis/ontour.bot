@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 const EVENT_STARTED = 'Bot started';
 exports.EVENT_STARTED = EVENT_STARTED;
 const EVENT_LANG_CHANGED = 'Bot language changed';
