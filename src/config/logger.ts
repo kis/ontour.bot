@@ -1,7 +1,7 @@
 import { getAnalytics } from './analytics'
 import updateSseClients from '../sse/clients'
 import { putData } from './dynamo-db'
-import { IMessage, IEventData } from '../constants/typings'
+import { IMessage } from '../constants/typings'
 
 async function log(msg: IMessage, event: string, params: any) {
     try {
@@ -14,7 +14,7 @@ async function log(msg: IMessage, event: string, params: any) {
             }
         });
     
-        const eventData: IEventData = {
+        const eventData: any = {
             userId: msg.from.id,
             event,
             params,
