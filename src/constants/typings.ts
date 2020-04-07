@@ -11,11 +11,11 @@ interface IMessage extends Message {
 }
 
 interface IEventData {
-    userId?: any;
+    userId?: number | string | any;
     event: number | string | any;
     params: any;
-    chat_id: number;
-    message_id: number;
+    chat_id: number | string | any;
+    message_id: number | string | any;
     anonymousId?: any;
 }
 
