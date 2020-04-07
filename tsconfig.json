@@ -3,12 +3,11 @@
   "compilerOptions": {
     "rootDir": ".",
     "esModuleInterop": true,
-    "outDir": "build"
+    "outDir": "dist"
   },
   "include": [
     "src/**/*.ts",
   ],
   "exclude": [
-    "src/client/*.ts",
   ]
 }

@@ -1,6 +1,5 @@
 import express from 'express'
-
-const Connection = require('./connection');
+import Connection from './connection'
 
 export interface MiddlewareResponse extends express.Response {
     sseConnection?: any;

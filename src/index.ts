@@ -1,16 +1,16 @@
-// const Promise = require('bluebird');
-// Promise.config({
-//   cancellation: true
-// });
-
-import * as bot from './bot'
-import web from './web'
-
-console.log(process.env.NODE_ENV);
+const Promise = require('bluebird');
+Promise.config({
+  cancellation: true
+});
 
 if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config();
 }
+
+console.log(process.env);
+
+import * as bot from './bot'
+import web from './web'
 
 const Raven = require('raven');
 Raven.config('https://3d8641fee61f425c9af50b4c8bbc11ef@sentry.io/1247513').install();
@@ -20,6 +20,6 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
-Raven.context(function () {
+Raven.context(() => {
     web(bot);
 });

@@ -2,11 +2,11 @@
   "name": "telegram-bot-bootcamp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "rm -rf dist/ && tsc",
     "watch": "npm run build && nodemon --watch ./src --ext ts --exec 'tsc && node .'",
-    "debug": "npm run build && nodemon --legacy-watch --watch ./src --ext ts --exec node -r ts-node/register --inspect=0.0.0.0:5858 ./src/index.ts",
+    "debug": "npm run build && nodemon --legacy-watch --watch ./src --ext ts --exec node -r ts-node/register --inspect=0.0.0.0:9229 .",
     "start": "node index",
     "demon": "nodemon index",
     "dev": "pm2 start",
@@ -50,6 +50,7 @@
     "@types/node": "^10.17.18",
     "gts": "^1.1.2",
     "nodemon": "^2.0.2",
+    "ts-node": "^8.8.2",
     "tslint": "^6.1.1",
     "typescript": "~3.7.0"
   }

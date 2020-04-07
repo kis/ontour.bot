@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 (function() {
     const sourceURL = "http://ec2-54-84-149-116.compute-1.amazonaws.com:54062/topn/updates";
     const source = new EventSource(sourceURL);

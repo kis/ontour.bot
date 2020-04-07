@@ -12,27 +12,24 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
+const path_1 = __importDefault(require("path"));
 const topic_1 = __importDefault(require("./sse/topic"));
 const middleware_1 = __importDefault(require("./sse/middleware"));
-const packageInfo = require('./package.json');
 const app = express_1.default();
 app.use(bodyParser.json());
 app.use(express_1.default.static(__dirname));
 app.use(middleware_1.default);
-app.use(function (_req, res, next) {
+app.use((_req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     next();
 });
-app.get('/', function (_req, res) {
-    res.json({ version: packageInfo.version });
+app.get('/index', (_req, res) => {
+    res.sendfile(path_1.default.resolve(__dirname, '../../client/index.html'));
 });
-app.get('/index', function (_req, res) {
-    res.sendfile(__dirname + '/index.html');
-});
-app.get('/topn/updates', function (_req, res) {
+app.get('/topn/updates', (_req, res) => {
     let sseConnection = res.sseConnection;
     sseConnection.setup();
     topic_1.default.add(sseConnection);
@@ -44,7 +41,7 @@ const server = app.listen(54062, "0.0.0.0", () => {
     console.log('Web server started at http://%s:%s', host, port);
 });
 function default_1(bot) {
-    app.post('/' + bot.token, function (req, res) {
+    app.post('/' + process.env.TELEGRAM_TOKEN, (req, res) => {
         console.log('mes', req.body);
         bot.processUpdate(req.body);
         res.sendStatus(200);
